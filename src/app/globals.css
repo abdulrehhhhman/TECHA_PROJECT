@@ -1,26 +1,113 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primitive palette — deepened and desaturated slightly from the original
+     brief for a richer, more considered feel; tonal steps (100/500/600/700)
+     give gradients and hover states somewhere to go besides flat blocks. */
+  --color-sage-50: #f0f5f1;
+  --color-sage-100: #e3ede6;
+  --color-sage-500: #5a8d71;
+  --color-sage-600: #46704f;
+  --color-sage-700: #33513c;
+
+  --color-gold-50: #faf4ea;
+  --color-gold-100: #f2e4cd;
+  --color-gold-500: #c99a5f;
+  --color-gold-600: #a97c42;
+  --color-gold-700: #86602f;
+
+  --color-teal-50: #eaf0ef;
+  --color-teal-100: #d9e5e3;
+  --color-teal-500: #274d4d;
+  --color-teal-600: #1a3636;
+  --color-teal-700: #102423;
+
+  --color-cream: #faf8f4;
+  --color-charcoal: #292521;
+  --color-stone: #6b6459;
+  --color-border: #e5e0d6;
+
+  /* Semantic aliases */
+  --background: var(--color-cream);
+  --foreground: var(--color-charcoal);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--color-sage-500);
+  --color-primary-dark: var(--color-sage-600);
+  --color-primary-deep: var(--color-sage-700);
+  --color-primary-light: var(--color-sage-100);
+  --color-primary-50: var(--color-sage-50);
+
+  --color-secondary: var(--color-gold-500);
+  --color-secondary-dark: var(--color-gold-600);
+  --color-secondary-deep: var(--color-gold-700);
+  --color-secondary-light: var(--color-gold-100);
+  --color-secondary-50: var(--color-gold-50);
+
+  --color-accent: var(--color-teal-500);
+  --color-accent-dark: var(--color-teal-600);
+  --color-accent-deep: var(--color-teal-700);
+  --color-accent-light: var(--color-teal-100);
+  --color-accent-50: var(--color-teal-50);
+
+  --color-soft: var(--color-stone);
+  --color-border: var(--color-border);
+
+  --font-heading: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Soft, warm-tinted shadows (charcoal, not pure black) in two layers for
+     a tactile, gently lifted feel rather than a hard drop shadow. */
+  --shadow-soft: 0 1px 2px rgba(41, 37, 33, 0.04), 0 4px 16px rgba(41, 37, 33, 0.06);
+  --shadow-soft-lg: 0 4px 10px rgba(41, 37, 33, 0.05), 0 20px 44px rgba(41, 37, 33, 0.1);
+  --shadow-soft-xl: 0 8px 20px rgba(41, 37, 33, 0.07), 0 32px 64px rgba(41, 37, 33, 0.14);
+
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  --ease-calm: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.01em;
+}
+
+/* A subtle, almost-imperceptible dot texture for sections that would
+   otherwise read as a flat color block. Kept far too faint to distract. */
+.bg-texture-dots {
+  background-image: radial-gradient(rgba(70, 112, 79, 0.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -11px -11px;
+}
+
+/* Visible, warm focus ring for keyboard navigation — accessibility over cosmetics */
+:focus-visible {
+  outline: 2px solid var(--color-teal-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
