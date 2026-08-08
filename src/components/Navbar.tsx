@@ -5,7 +5,8 @@ import { useState } from "react";
 import Button from "./Button";
 import Logo from "./Logo";
 import { PhoneIcon } from "./icons";
-import { JANE_BOOKING_URL } from "@/lib/jane";
+import { JANE_LOGIN_URL } from "@/lib/jane";
+import { REQUEST_APPOINTMENT_PATH } from "@/lib/routes";
 
 const PHONE_DISPLAY = "(346) 878-5272";
 const PHONE_HREF = "tel:+13468785272";
@@ -14,7 +15,6 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
-  { href: "/testimonials", label: "Testimonials" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -28,7 +28,7 @@ export default function Navbar() {
           <Logo />
         </Link>
 
-        <nav aria-label="Primary" className="hidden items-center gap-8 lg:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-6 xl:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -41,20 +41,42 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-5 lg:flex">
+        <div className="hidden items-center gap-3 xl:flex">
           <a
             href={PHONE_HREF}
-            className="flex items-center gap-2 text-[1.05rem] font-medium text-accent transition-colors hover:text-accent-dark"
+            className="flex shrink-0 items-center gap-2 whitespace-nowrap text-[1.05rem] font-medium text-accent transition-colors hover:text-accent-dark"
           >
             <PhoneIcon className="h-4 w-4" />
             {PHONE_DISPLAY}
           </a>
-          <Button href={JANE_BOOKING_URL}>Book Your Consultation</Button>
+          <Button
+            href={REQUEST_APPOINTMENT_PATH}
+            size="sm"
+            className="shrink-0 whitespace-nowrap"
+          >
+            Request an Appointment
+          </Button>
+          <Button
+            href={JANE_LOGIN_URL}
+            variant="outline"
+            size="sm"
+            className="shrink-0 whitespace-nowrap"
+          >
+            Existing Patient Portal
+          </Button>
         </div>
 
-        <div className="flex items-center gap-3 lg:hidden">
-          <Button href={JANE_BOOKING_URL} size="sm">
-            Book Now
+        <div className="flex items-center gap-2 xl:hidden">
+          <Button
+            href={REQUEST_APPOINTMENT_PATH}
+            size="sm"
+            className="!px-3 !py-1.5 !text-xs leading-tight"
+          >
+            <span className="block text-center">
+              Request an
+              <br />
+              Appointment
+            </span>
           </Button>
           <button
             type="button"
@@ -81,8 +103,8 @@ export default function Navbar() {
 
       <div
         id="mobile-menu"
-        className={`overflow-hidden border-t border-border/80 bg-background transition-[max-height] duration-300 ease-in-out lg:hidden ${
-          open ? "max-h-96" : "max-h-0 border-t-0"
+        className={`overflow-hidden border-t border-border/80 bg-background transition-[max-height] duration-300 ease-in-out xl:hidden ${
+          open ? "max-h-[30rem]" : "max-h-0 border-t-0"
         }`}
       >
         <nav aria-label="Mobile" className="flex flex-col gap-1 px-4 py-4 sm:px-6">
@@ -102,6 +124,15 @@ export default function Navbar() {
           >
             <PhoneIcon className="h-4 w-4" />
             {PHONE_DISPLAY}
+          </a>
+          <a
+            href={JANE_LOGIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 rounded-lg px-3 py-3 text-lg font-medium text-soft transition-colors hover:text-accent"
+          >
+            Existing Patient Portal
           </a>
         </nav>
       </div>

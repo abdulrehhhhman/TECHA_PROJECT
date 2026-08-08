@@ -1,17 +1,27 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Brain, ClipboardList, Heart, Pill, Shield, Video } from "lucide-react";
+import {
+  Anchor,
+  Brain,
+  ClipboardList,
+  Heart,
+  Moon,
+  Pill,
+  Shield,
+  Stethoscope,
+  Video,
+} from "lucide-react";
 import Button from "@/components/Button";
 import CTABand from "@/components/CTABand";
 import Reveal from "@/components/Reveal";
 import { CheckIcon } from "@/components/icons";
-import { JANE_BOOKING_URL } from "@/lib/jane";
+import { REQUEST_APPOINTMENT_PATH } from "@/lib/routes";
 
 const ICON_PROPS = { className: "h-7 w-7", strokeWidth: 1.75 };
 
 const PAGE_TITLE = "Mental Health & Addiction Medicine Services";
 const PAGE_DESCRIPTION =
-  "Psychiatric evaluations, medication management, anxiety and depression treatment, Suboxone (MAT) for addiction medicine, ADHD evaluations, and telehealth or in-person visits — all in one compassionate Houston practice.";
+  "Psychiatric evaluations, medication management, anxiety and depression treatment, ADHD, PTSD/trauma, insomnia, Suboxone (MAT) for addiction medicine, primary care, and telehealth or in-person visits — all in one compassionate Houston practice.";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -29,7 +39,6 @@ interface Service {
   title: string;
   description: string;
   details: string[];
-  cta: string;
 }
 
 const SERVICES: Service[] = [
@@ -45,7 +54,6 @@ const SERVICES: Service[] = [
       "Treatment planning",
       "Ongoing monitoring",
     ],
-    cta: "Schedule an Evaluation",
   },
   {
     id: "medication-management",
@@ -59,12 +67,11 @@ const SERVICES: Service[] = [
       "Side effect management",
       "Integration with therapy",
     ],
-    cta: "Discuss Medication Options",
   },
   {
-    id: "mental-health",
+    id: "anxiety-depression",
     icon: <Heart {...ICON_PROPS} />,
-    title: "Treatment for Anxiety & Depression",
+    title: "Anxiety & Depression Treatment",
     description:
       "Anxiety and depression are among the most common mental health conditions. We use evidence-based therapy and medication to help you feel like yourself again.",
     details: [
@@ -73,26 +80,11 @@ const SERVICES: Service[] = [
       "Medication options",
       "Personalized treatment plans",
     ],
-    cta: "Get Support for Anxiety & Depression",
-  },
-  {
-    id: "addiction-medicine",
-    icon: <Shield {...ICON_PROPS} />,
-    title: "Addiction Medicine & Suboxone (MAT)",
-    description:
-      "Medication-assisted treatment (MAT) using Suboxone is a compassionate, evidence-based approach to opioid use disorder. We support your recovery journey with dignity.",
-    details: [
-      "Suboxone maintenance",
-      "Counseling",
-      "Relapse prevention",
-      "Long-term recovery support",
-    ],
-    cta: "Start Your Recovery",
   },
   {
     id: "adhd",
     icon: <Brain {...ICON_PROPS} />,
-    title: "ADHD Evaluations & Treatment",
+    title: "ADHD Evaluation and Management",
     description:
       "ADHD affects focus, organization, and daily functioning. We provide thorough evaluations and personalized treatment to help you succeed.",
     details: [
@@ -101,12 +93,63 @@ const SERVICES: Service[] = [
       "Behavioral strategies",
       "School/work accommodations support",
     ],
-    cta: "Get an ADHD Evaluation",
   },
   {
-    id: "telehealth",
+    id: "ptsd-trauma",
+    icon: <Anchor {...ICON_PROPS} />,
+    title: "PTSD/Trauma-Related Conditions",
+    description:
+      "Trauma can affect every part of life. We provide compassionate, evidence-based care to help you process trauma and regain a sense of stability and safety.",
+    details: [
+      "Trauma-informed evaluation",
+      "Medication management",
+      "Coping and grounding strategies",
+      "Personalized treatment plans",
+    ],
+  },
+  {
+    id: "insomnia",
+    icon: <Moon {...ICON_PROPS} />,
+    title: "Insomnia Treatment",
+    description:
+      "Sleep struggles can affect your mental and physical health. We identify the root causes of insomnia and build a treatment plan to help you rest well again.",
+    details: [
+      "Sleep assessment",
+      "Medication options",
+      "Behavioral sleep strategies",
+      "Ongoing monitoring",
+    ],
+  },
+  {
+    id: "addiction-medicine",
+    icon: <Shield {...ICON_PROPS} />,
+    title: "Addiction Medicine/Suboxone (MAT)",
+    description:
+      "Medication-assisted treatment (MAT) using Suboxone is a compassionate, evidence-based approach to opioid use disorder. We support your recovery journey with dignity.",
+    details: [
+      "Suboxone maintenance",
+      "Counseling",
+      "Relapse prevention",
+      "Long-term recovery support",
+    ],
+  },
+  {
+    id: "primary-care",
+    icon: <Stethoscope {...ICON_PROPS} />,
+    title: "Primary Care/Family Medicine",
+    description:
+      "Whole-person care for you and your family, alongside your mental health treatment—so your physical and mental well-being are supported in one place.",
+    details: [
+      "Annual wellness visits",
+      "Preventive care",
+      "Chronic condition management",
+      "Referrals when needed",
+    ],
+  },
+  {
+    id: "telehealth-in-person",
     icon: <Video {...ICON_PROPS} />,
-    title: "Telehealth & In-Person Visits",
+    title: "Telehealth and In-Person Care",
     description:
       "Choose the care format that works for you. Telehealth for convenience, in-person for a direct connection.",
     details: [
@@ -115,7 +158,6 @@ const SERVICES: Service[] = [
       "Flexible scheduling",
       "Same quality care both ways",
     ],
-    cta: "Book an Appointment",
   },
 ];
 
@@ -166,8 +208,12 @@ export default function ServicesPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button href={JANE_BOOKING_URL} variant="accent" className="mt-7">
-                    {service.cta}
+                  <Button
+                    href={REQUEST_APPOINTMENT_PATH}
+                    variant="accent"
+                    className="mt-7"
+                  >
+                    Request an Appointment
                   </Button>
                 </div>
               </div>

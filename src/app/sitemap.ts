@@ -7,7 +7,8 @@ const ROUTES = [
   { path: "/about", priority: 0.8 },
   { path: "/testimonials", priority: 0.7 },
   { path: "/contact", priority: 0.7 },
-  { path: "/book-consultation", priority: 0.9 },
+  { path: "/request-appointment", priority: 0.9 },
+  { path: "/refer-a-patient", priority: 0.7 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

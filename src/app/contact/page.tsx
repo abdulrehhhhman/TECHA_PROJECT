@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
 };
 
-const ADDRESS = "123 Wellness Way, Suite 200, Your City, ST 00000";
+const ADDRESS = "722 Fairmont Parkway, Pasadena, TX 77504";
 const DIRECTIONS_HREF = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`;
 
 export default function ContactPage() {
@@ -123,7 +123,7 @@ export default function ContactPage() {
 
       <CTABand
         heading="Ready to take the next step?"
-        subtext="Book your consultation online, or call us directly."
+        subtext="Request an appointment online, or call us directly."
       />
     </>
   );

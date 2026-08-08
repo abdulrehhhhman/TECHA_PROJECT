@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import techaHeadshot from "../../public/images/techa-headshot.jpg";
 import Button from "@/components/Button";
-import ConsultationForm from "@/components/ConsultationForm";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import ServiceCard from "@/components/ServiceCard";
-import TestimonialCard from "@/components/TestimonialCard";
-import { JANE_BOOKING_URL } from "@/lib/jane";
+import { JANE_LOGIN_URL } from "@/lib/jane";
+import { REFER_A_PATIENT_PATH, REQUEST_APPOINTMENT_PATH } from "@/lib/routes";
 import {
   ClipboardIcon,
   HeartPulseIcon,
@@ -49,13 +49,13 @@ const SERVICES = [
   },
   {
     icon: <HeartPulseIcon />,
-    title: "Anxiety & Depression",
+    title: "Anxiety & Depression Treatment",
     description:
       "Evidence-based therapy and treatment for anxiety, depression, and related conditions. We focus on your individual journey.",
   },
   {
     icon: <VideoIcon />,
-    title: "Telehealth & In-Home",
+    title: "Telehealth and In-Person Care",
     description:
       "Convenient telehealth appointments and welcoming in-person visits. Care on your terms.",
   },
@@ -70,35 +70,11 @@ const INSURANCE_PARTNERS = [
   "Medicaid",
 ];
 
-const STATS = [
-  { value: "2,500+", label: "Patients Served" },
-  { value: "25+", label: "Years Experience" },
-  { value: "98%", label: "Patient Satisfaction" },
-  { value: "24hr", label: "Response Time" },
-];
-
-const TESTIMONIALS = [
-  {
-    name: "Sarah Mitchell",
-    quote:
-      "She has completely changed my approach to managing my anxiety. I feel more equipped and hopeful now. I'd highly recommend her!",
-  },
-  {
-    name: "Marina Johnson",
-    quote:
-      "These services have been the best thing I've done for myself. I learned excellent guidance for life athlete's care.",
-  },
-  {
-    name: "Emily Rodriguez",
-    quote:
-      "When I met with Techa and her team, compassionate care, confidence and extensive knowledge brought many anxious thoughts to resolve.",
-  },
-];
 
 export default function HomePage() {
   return (
     <>
-      {/* Hero — headline left, booking form right, soft bright backdrop */}
+      {/* Hero — headline left, welcoming image right, soft bright backdrop */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
@@ -113,7 +89,7 @@ export default function HomePage() {
         </div>
 
         <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-14 sm:px-6 sm:pt-20 lg:px-8 lg:pb-24 lg:pt-24">
-          <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
             <Reveal>
               <span className="inline-block rounded-full bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary-dark shadow-soft backdrop-blur-sm">
                 Proactive Medical and Wellness Center
@@ -122,49 +98,52 @@ export default function HomePage() {
                 Accessible Care for Mind, Body, &amp; Community
               </h1>
               <p className="mt-6 max-w-xl text-xl leading-relaxed text-soft">
-                Compassionate mental health and addiction medicine services
-                designed to help you thrive.
+                Mental Health &middot; Family Medicine &middot; Addiction
+                Medicine — compassionate, personalized care in Pasadena, TX.
               </p>
-              <p className="mt-6 text-base font-medium tracking-wide text-primary-dark">
-                Confidential &middot; Compassionate &middot; Judgment-Free
-              </p>
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <Button href={JANE_BOOKING_URL} size="lg">
-                  Book Now
+
+              <div className="mt-8">
+                <Button href={REQUEST_APPOINTMENT_PATH} size="lg">
+                  Request an Appointment
                 </Button>
-                <a
-                  href="tel:+13468785272"
-                  className="inline-flex items-center gap-2 text-lg font-semibold text-accent transition-colors hover:text-accent-dark"
-                >
-                  <PhoneIcon className="h-5 w-5" />
-                  Or call us: (346) 878-5272
-                </a>
               </div>
 
-              <div className="group relative mt-10 aspect-4/3 w-full max-w-md overflow-hidden rounded-xl shadow-soft-lg ring-1 ring-primary/15">
-                <Image
-                  src="https://images.unsplash.com/photo-1741682739943-d0209422f004?auto=format&fit=crop&w=1000&q=75"
-                  alt="A calm, sunlit space"
-                  fill
-                  sizes="(min-width: 1024px) 448px, 90vw"
-                  className="ease-calm object-cover transition-transform duration-[1400ms] group-hover:scale-105"
-                />
+              <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
+                <a
+                  href={JANE_LOGIN_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[1.05rem] font-semibold text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-dark"
+                >
+                  Existing Patient Portal
+                </a>
+                <Link
+                  href={REFER_A_PATIENT_PATH}
+                  className="text-[1.05rem] font-semibold text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-dark"
+                >
+                  Refer a Patient
+                </Link>
               </div>
+
+              <a
+                href="tel:+13468785272"
+                className="mt-6 inline-flex items-center gap-2 text-lg font-semibold text-accent transition-colors hover:text-accent-dark"
+              >
+                <PhoneIcon className="h-5 w-5" />
+                Or call us: (346) 878-5272
+              </a>
             </Reveal>
 
             <Reveal delayMs={150}>
-              <ConsultationForm
-                compact
-                title="Book Your Consultation"
-                subtitle="Take the first step towards better health"
-                reasonLabel="How can we support you today?"
-                reasonPlaceholder="Share a little about what brings you here today."
-                submitLabel="Request Appointment"
-              />
-              <p className="mt-5 text-center text-[1.05rem] leading-relaxed text-soft">
-                Whether you&apos;re feeling overwhelmed, anxious, or just need
-                someone to talk to — we&apos;re here to help.
-              </p>
+              <div className="group relative mx-auto aspect-square w-full max-w-lg overflow-hidden rounded-xl shadow-soft-xl ring-1 ring-primary/15 lg:mx-0">
+                <Image
+                  src="https://images.unsplash.com/photo-1741682739943-d0209422f004?auto=format&fit=crop&w=1200&q=75"
+                  alt="A calm, sunlit space"
+                  fill
+                  sizes="(min-width: 1024px) 560px, 90vw"
+                  className="ease-calm object-cover transition-transform duration-[1400ms] group-hover:scale-105"
+                />
+              </div>
             </Reveal>
           </div>
         </div>
@@ -190,8 +169,8 @@ export default function HomePage() {
           <p className="text-lg text-soft">
             Not sure which service is right for you?
           </p>
-          <Button href={JANE_BOOKING_URL} variant="outline" size="lg" className="mt-5">
-            Schedule a Consultation
+          <Button href={REQUEST_APPOINTMENT_PATH} variant="outline" size="lg" className="mt-5">
+            Request an Appointment
           </Button>
         </Reveal>
       </section>
@@ -249,8 +228,8 @@ export default function HomePage() {
             </p>
           </div>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button href={JANE_BOOKING_URL} size="lg">
-              Book Your Appointment Today
+            <Button href={REQUEST_APPOINTMENT_PATH} size="lg">
+              Request an Appointment
             </Button>
             <Button href="tel:+13468785272" variant="outline" size="lg">
               Call: (346) 878-5272
@@ -271,16 +250,13 @@ export default function HomePage() {
               <div className="relative overflow-hidden rounded-xl shadow-soft-xl ring-1 ring-primary/20">
                 <Image
                   src={techaHeadshot}
-                  alt="Techa B., MSN, FNP-C, FMHNP-C — Founder of Proactive Medical and Wellness"
+                  alt="Techa Bryant, MSN, APRN, PMHNP-C, FNP-C — Founder of Proactive Medical and Wellness"
                   placeholder="blur"
                   quality={95}
                   sizes="(min-width: 768px) 240px, 60vw"
                   className="ease-calm block h-auto w-full object-cover contrast-[1.05] saturate-[1.05] transition-transform duration-[1400ms] group-hover:scale-105"
                 />
               </div>
-              <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-secondary px-5 py-2 text-sm font-semibold text-foreground shadow-soft-lg">
-                25+ Years of Excellence
-              </span>
             </div>
           </Reveal>
 
@@ -289,10 +265,10 @@ export default function HomePage() {
               Meet Your Provider
             </span>
             <h2 className="mt-4 font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-              Meet Techa B.
+              Meet Techa Bryant
             </h2>
             <p className="mt-1 text-lg font-semibold text-secondary-deep">
-              MSN, FNP-C, FMHNP-C
+              MSN, APRN, PMHNP-C, FNP-C
             </p>
             <p className="mt-5 text-lg leading-relaxed text-soft">
               With deep clinical expertise and a warm, judgment-free approach,
@@ -301,41 +277,13 @@ export default function HomePage() {
               treatment. She&apos;s passionate about helping patients reclaim
               their lives with dignity and hope.
             </p>
-            <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {STATS.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-xl border border-border/70 bg-white p-4 text-center shadow-soft"
-                >
-                  <p className="font-heading text-2xl font-semibold text-primary-dark">
-                    {stat.value}
-                  </p>
-                  <p className="mt-1 text-sm text-soft">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-            <Button href={JANE_BOOKING_URL} size="lg" className="mt-8">
-              Schedule Your Visit
+            <p className="mt-6 text-lg font-medium text-primary-dark">
+              Personalized, accessible care for every patient.
+            </p>
+            <Button href={REQUEST_APPOINTMENT_PATH} size="lg" className="mt-8">
+              Request an Appointment
             </Button>
           </Reveal>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
-        <Reveal>
-          <SectionHeading
-            eyebrow="Testimonials"
-            title="What Our Patients Say"
-            description="Real stories from real patients who have experienced the Proactive Medical difference in their health journey."
-          />
-        </Reveal>
-        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
-            <Reveal key={t.name} delayMs={i * 100} className="h-full">
-              <TestimonialCard {...t} />
-            </Reveal>
-          ))}
         </div>
       </section>
     </>

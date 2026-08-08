@@ -1,6 +1,6 @@
 import Button from "./Button";
 import { PhoneIcon } from "./icons";
-import { JANE_BOOKING_URL } from "@/lib/jane";
+import { REQUEST_APPOINTMENT_PATH } from "@/lib/routes";
 
 const PHONE_DISPLAY = "(346) 878-5272";
 const PHONE_HREF = "tel:+13468785272";
@@ -21,8 +21,8 @@ export default function CTABand({ heading, subtext }: CTABandProps) {
           <p className="mt-4 text-lg leading-relaxed text-white/80">{subtext}</p>
         )}
         <div className="mt-9 flex flex-col items-center justify-center gap-5 sm:flex-row">
-          <Button href={JANE_BOOKING_URL} size="lg">
-            Book Your Consultation
+          <Button href={REQUEST_APPOINTMENT_PATH} size="lg">
+            Request an Appointment
           </Button>
           <a
             href={PHONE_HREF}

@@ -1,4 +1,4 @@
-// Jane App doesn't offer a public booking API for this clinic, so instant
-// "Book Now" CTAs link directly to the clinic's hosted Jane booking page.
-export const JANE_BOOKING_URL =
-  "https://proactivemedicalandwellness.janeapp.com/locations/proactive-medical-and-wellness/book";
+// Patients now request an appointment through our own form; staff review
+// and schedule in Jane. Jane's direct self-booking URL is no longer used.
+// Only existing patients use Jane directly, to sign in to their portal.
+export const JANE_LOGIN_URL = "https://proactivemedicalandwellness.janeapp.com/login";

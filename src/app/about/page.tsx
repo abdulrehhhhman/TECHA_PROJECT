@@ -5,9 +5,9 @@ import CTABand from "@/components/CTABand";
 import Reveal from "@/components/Reveal";
 import { CheckIcon } from "@/components/icons";
 
-const PAGE_TITLE = "About Techa B. — Family Nurse Practitioner";
+const PAGE_TITLE = "About Techa Bryant — Family Nurse Practitioner";
 const PAGE_DESCRIPTION =
-  "Techa B., MSN, FNP-C, FMHNP-C, brings 25+ years of clinical experience in psychiatric care, medication management, and addiction medicine to Proactive Medical and Wellness.";
+  "Techa Bryant, MSN, APRN, PMHNP-C, FNP-C, brings dedicated clinical experience in psychiatric care, medication management, and addiction medicine to Proactive Medical and Wellness.";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -22,10 +22,13 @@ export const metadata: Metadata = {
 const SPECIALTIES = [
   "Psychiatric Evaluations",
   "Medication Management",
-  "Anxiety & Depression",
-  "ADHD Evaluations",
-  "Addiction Medicine & Suboxone Treatment",
-  "Telehealth & In-Person Care",
+  "Anxiety & Depression Treatment",
+  "ADHD Evaluation and Management",
+  "PTSD/Trauma-Related Conditions",
+  "Insomnia Treatment",
+  "Addiction Medicine/Suboxone (MAT)",
+  "Primary Care/Family Medicine",
+  "Telehealth and In-Person Care",
 ];
 
 function ProviderPortrait() {
@@ -36,7 +39,7 @@ function ProviderPortrait() {
       <div className="relative overflow-hidden rounded-xl shadow-soft-xl ring-1 ring-primary/20">
         <Image
           src={techaHeadshot}
-          alt="Techa B., MSN, FNP-C, FMHNP-C — Founder of Proactive Medical and Wellness"
+          alt="Techa Bryant, MSN, APRN, PMHNP-C, FNP-C — Founder of Proactive Medical and Wellness"
           placeholder="blur"
           quality={95}
           sizes="(min-width: 768px) 240px, 60vw"
@@ -56,7 +59,7 @@ export default function AboutPage() {
             About Us
           </span>
           <h1 className="mt-5 font-heading text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
-            Meet Techa B. — Your Mental Health Partner
+            Meet Techa Bryant — Your Mental Health Partner
           </h1>
           <p className="mt-5 text-xl leading-relaxed text-soft">
             Proactive Medical and Wellness was built on a simple belief: care
@@ -73,23 +76,23 @@ export default function AboutPage() {
           </Reveal>
           <Reveal delayMs={120}>
             <p className="text-lg font-semibold text-foreground">
-              Techa B., MSN, FNP-C, FMHNP-C
+              Techa Bryant, MSN, APRN, PMHNP-C, FNP-C
             </p>
             <h2 className="mt-1 font-heading text-2xl font-semibold text-primary-dark sm:text-3xl">
-              25+ Years of Dedicated Clinical Experience
+              Dedicated Clinical Experience You Can Trust
             </h2>
             <p className="mt-5 text-lg leading-relaxed text-soft">
-              With over 25 years of dedicated experience in mental health and
+              With years of dedicated experience in mental health and
               wellness, Techa brings deep clinical expertise, compassion, and
               a commitment to personalized care. She specializes in
               psychiatric evaluations, medication management, and addiction
               medicine—including Suboxone (MAT) treatment for opioid use
-              disorder. Techa holds a Master of Science in Nursing and is
-              board-certified as a Family Nurse Practitioner (FNP-C) and
-              Family Psychiatric-Mental Health Nurse Practitioner (FMHNP-C).
-              She is passionate about reducing the stigma surrounding mental
-              health and helping patients reclaim their lives with dignity
-              and hope.
+              disorder. Techa is a board-certified Advanced Practice
+              Registered Nurse (APRN), with certifications as a
+              Psychiatric-Mental Health Nurse Practitioner (PMHNP-C) and
+              Family Nurse Practitioner (FNP-C). She is passionate about
+              reducing the stigma surrounding mental health and helping
+              patients reclaim their lives with dignity and hope.
             </p>
             <ul className="mt-7 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
               {SPECIALTIES.map((specialty) => (

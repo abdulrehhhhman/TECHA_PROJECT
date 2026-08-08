@@ -1,21 +1,25 @@
 import Link from "next/link";
 import { SOCIAL_LINKS } from "@/lib/socials";
+import { JANE_LOGIN_URL } from "@/lib/jane";
+import { REFER_A_PATIENT_PATH, REQUEST_APPOINTMENT_PATH } from "@/lib/routes";
 import { LogoMark } from "./Logo";
 
 const QUICK_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/testimonials", label: "Testimonials" },
+  { href: "/services", label: "Services" },
   { href: "/contact", label: "Contact" },
-  { href: "/book-consultation", label: "Book a Consultation" },
+  { href: REQUEST_APPOINTMENT_PATH, label: "Request an Appointment" },
+  { href: JANE_LOGIN_URL, label: "Existing Patient Portal", external: true },
+  { href: REFER_A_PATIENT_PATH, label: "Refer a Patient" },
 ];
 
 const SERVICE_LINKS = [
   { href: "/services", label: "All Services" },
-  { href: "/services#mental-health", label: "Mental Health Counseling" },
+  { href: "/services#psychiatric-evaluations", label: "Psychiatric Evaluations" },
   { href: "/services#addiction-medicine", label: "Addiction Medicine" },
   { href: "/services#medication-management", label: "Medication Management" },
-  { href: "/services#group-therapy", label: "Group Therapy" },
+  { href: "/services#telehealth-in-person", label: "Telehealth and In-Person Care" },
 ];
 
 const INSURANCE_PARTNERS = [
@@ -67,16 +71,29 @@ export default function Footer() {
           <div>
             <FooterHeading>Quick Links</FooterHeading>
             <ul className="mt-4 space-y-2.5">
-              {QUICK_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-[1.05rem] text-white/75 transition-colors hover:text-secondary-light"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {QUICK_LINKS.map((link) =>
+                "external" in link && link.external ? (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[1.05rem] text-white/75 transition-colors hover:text-secondary-light"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ) : (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-[1.05rem] text-white/75 transition-colors hover:text-secondary-light"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ),
+              )}
             </ul>
           </div>
 
@@ -107,12 +124,12 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:reception@proactivemedicalandwellness.com"
-                  className="transition-colors hover:text-secondary-light"
+                  className="break-words transition-colors hover:text-secondary-light"
                 >
                   reception@proactivemedicalandwellness.com
                 </a>
               </li>
-              <li>123 Wellness Way, Suite 200<br />Your City, ST 00000</li>
+              <li>722 Fairmont Parkway<br />Pasadena, TX 77504</li>
               <li className="pt-1 text-white/60">
                 Mon–Fri: 8am – 5pm
                 <br />
