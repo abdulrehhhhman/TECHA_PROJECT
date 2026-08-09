@@ -19,6 +19,17 @@ const SERVICE_OPTIONS = [
   "Primary Care/Family Medicine",
 ];
 
+// No free text here on purpose — keeps patients from typing detailed health
+// information into the form; specifics are discussed securely by phone.
+const REASON_OPTIONS = [
+  "New Patient – Mental Health/Psychiatry",
+  "New Patient – Primary Care",
+  "Medication Management",
+  "Follow-up/Existing Patient",
+  "Addiction Medicine",
+  "Other – Please Contact Me",
+];
+
 const REQUIRED_FIELDS = [
   "full_name",
   "phone",
@@ -202,14 +213,22 @@ export default function AppointmentRequestForm() {
         </select>
       </Field>
 
-      <Field label="Brief Reason for Visit">
-        <textarea
+      <Field label="Reason for Visit">
+        <select
           name="reason_for_visit"
           required
-          rows={4}
-          placeholder="Briefly, what would you like help with? Please keep this general — detailed health information will be discussed when we contact you."
-          className={`${inputClasses} resize-none`}
-        />
+          defaultValue=""
+          className={inputClasses}
+        >
+          <option value="" disabled>
+            Select a reason
+          </option>
+          {REASON_OPTIONS.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
       </Field>
 
       <div className="pt-2">

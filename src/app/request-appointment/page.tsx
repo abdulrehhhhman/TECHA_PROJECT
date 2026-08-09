@@ -51,6 +51,14 @@ export default function RequestAppointmentPage() {
 
       <div className="mt-14 grid grid-cols-1 items-start gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-14">
         <Reveal>
+          <div className="mb-5 flex items-start gap-3 rounded-lg border border-primary/20 bg-primary-50 px-4 py-3.5 text-[1.05rem] leading-relaxed text-foreground">
+            <ShieldIcon className="mt-0.5 h-5 w-5 shrink-0 text-primary-dark" />
+            <p>
+              Please do not share detailed medical information through this
+              form. Our team will discuss any specific health details
+              securely by phone.
+            </p>
+          </div>
           <AppointmentRequestForm />
         </Reveal>
 
