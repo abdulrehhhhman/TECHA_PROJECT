@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { Turnstile } from "@marsidev/react-turnstile";
 import Button from "./Button";
 import { CheckIcon } from "./icons";
 
@@ -61,6 +62,7 @@ export default function ContactForm() {
     "idle",
   );
   const [errorMessage, setErrorMessage] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -82,6 +84,11 @@ export default function ContactForm() {
       setStatus("error");
       return;
     }
+    if (!turnstileToken) {
+      setErrorMessage("Please complete the security check.");
+      setStatus("error");
+      return;
+    }
 
     setStatus("submitting");
 
@@ -95,6 +102,8 @@ export default function ContactForm() {
           phone: data.get("phone"),
           subject,
           message,
+          fax_number: data.get("fax_number"), // Honeypot
+          turnstileToken,
         }),
       });
       const result = await res.json();
@@ -143,6 +152,8 @@ export default function ContactForm() {
       noValidate
       className="space-y-5 rounded-xl border border-border bg-white p-7 shadow-soft-lg sm:p-9"
     >
+      <input type="text" name="fax_number" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+
       {status === "error" && (
         <div
           role="alert"
@@ -177,6 +188,14 @@ export default function ContactForm() {
           className={`${inputClasses} resize-none`}
         />
       </Field>
+
+      <Turnstile
+        siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+        onSuccess={(token) => setTurnstileToken(token)}
+        onError={() => setErrorMessage("Security check failed. Please try again.")}
+        options={{ theme: 'light' }}
+      />
+
       <div className="pt-2">
         <Button
           type="submit"

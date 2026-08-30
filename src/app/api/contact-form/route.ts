@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabaseClient } from "@/lib/supabase";
+import { z } from "zod";
+import { validateTurnstileToken, checkRateLimitAndOrigin } from "@/lib/security";
 import {
   RECEPTION_EMAIL,
   TECHA_EMAIL,
@@ -7,30 +9,50 @@ import {
   sendNotificationEmail,
 } from "@/lib/email";
 
+const contactSchema = z.object({
+  name: z.string().min(1, "Name is required").max(100, "Name is too long"),
+  email: z.string().email("Invalid email address").max(254),
+  phone: z.string().max(20).optional().nullable(),
+  subject: z.string().min(1, "Subject is required").max(150),
+  message: z.string().min(1, "Message is required").max(5000),
+  fax_number: z.string().optional().nullable(), // Honeypot
+  turnstileToken: z.string().min(1, "Turnstile token required"),
+});
+
 export async function POST(request: Request) {
+  // 1. Rate Limit & Origin Check
+  const rateLimitRes = checkRateLimitAndOrigin(request);
+  if (rateLimitRes) return rateLimitRes;
+
   let body: Record<string, unknown>;
   try {
     body = await request.json();
   } catch {
+    return NextResponse.json({ success: false, error: "Invalid JSON body." }, { status: 400 });
+  }
+
+  // 2. Schema Validation
+  const result = contactSchema.safeParse(body);
+  if (!result.success) {
     return NextResponse.json(
-      { success: false, error: "Invalid JSON body." },
-      { status: 400 },
+      { success: false, error: result.error.issues[0].message },
+      { status: 400 }
     );
   }
 
-  const name = typeof body.name === "string" ? body.name.trim() : "";
-  const email = typeof body.email === "string" ? body.email.trim() : "";
-  const phone = typeof body.phone === "string" ? body.phone.trim() : null;
-  const subject = typeof body.subject === "string" ? body.subject.trim() : "";
-  const message = typeof body.message === "string" ? body.message.trim() : "";
+  const { name, email, phone, subject, message, fax_number, turnstileToken } = result.data;
 
-  if (!name || !email || !subject || !message) {
+  // 3. Honeypot Check (Silently drop if filled)
+  if (fax_number && fax_number.length > 0) {
+    return NextResponse.json({ success: true });
+  }
+
+  // 4. Turnstile Verification
+  const isHuman = await validateTurnstileToken(turnstileToken);
+  if (!isHuman) {
     return NextResponse.json(
-      {
-        success: false,
-        error: "name, email, subject, and message are required.",
-      },
-      { status: 400 },
+      { success: false, error: "Security verification failed. Please try again." },
+      { status: 403 }
     );
   }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { Turnstile } from "@marsidev/react-turnstile";
 import Button from "../Button";
 import { CheckIcon } from "../icons";
 import { Field, Spinner, inputClasses } from "./shared";
@@ -22,6 +23,7 @@ export default function ReferralForm() {
     "idle",
   );
   const [errorMessage, setErrorMessage] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -56,6 +58,11 @@ export default function ReferralForm() {
       setStatus("error");
       return;
     }
+    if (!turnstileToken) {
+      setErrorMessage("Please complete the security check.");
+      setStatus("error");
+      return;
+    }
 
     setStatus("submitting");
 
@@ -69,6 +76,8 @@ export default function ReferralForm() {
           patient_email: patientEmail,
           additional_notes: data.get("additional_notes"),
           consent_confirmed: consentConfirmed,
+          fax_number: data.get("fax_number"),
+          turnstileToken,
         }),
       });
       const result = await res.json();
@@ -118,6 +127,8 @@ export default function ReferralForm() {
       noValidate
       className="space-y-5 rounded-xl border border-border bg-white p-7 shadow-soft-lg sm:p-9"
     >
+      <input type="text" name="fax_number" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+
       {status === "error" && (
         <div
           role="alert"
@@ -203,6 +214,13 @@ export default function ReferralForm() {
         their information with Proactive Medical and Wellness for the
         purpose of this referral.
       </label>
+
+      <Turnstile
+        siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+        onSuccess={(token) => setTurnstileToken(token)}
+        onError={() => setErrorMessage("Security check failed. Please try again.")}
+        options={{ theme: 'light' }}
+      />
 
       <div className="pt-2">
         <Button

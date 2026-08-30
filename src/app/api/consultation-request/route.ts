@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabaseClient } from "@/lib/supabase";
+import { z } from "zod";
+import { validateTurnstileToken, checkRateLimitAndOrigin } from "@/lib/security";
 import {
   RECEPTION_EMAIL,
   TECHA_EMAIL,
@@ -7,49 +9,58 @@ import {
   sendNotificationEmail,
 } from "@/lib/email";
 
-function requiredString(value: unknown): string {
-  return typeof value === "string" ? value.trim() : "";
-}
+const appointmentSchema = z.object({
+  full_name: z.string().min(1, "Name is required").max(100),
+  phone: z.string().min(1, "Phone is required").max(20),
+  email: z.string().email("Invalid email address").max(254),
+  patient_type: z.string().min(1, "Patient type is required").max(50),
+  preferred_contact_method: z.string().min(1, "Contact method is required").max(50),
+  insurance_type: z.string().min(1, "Insurance type is required").max(50),
+  preferred_day_time: z.string().min(1, "Preferred day/time is required").max(200),
+  service_requested: z.string().min(1, "Service requested is required").max(100),
+  reason_for_visit: z.string().min(1, "Reason for visit is required").max(100),
+  fax_number: z.string().optional().nullable(), // Honeypot
+  turnstileToken: z.string().min(1, "Turnstile token required"),
+});
 
 export async function POST(request: Request) {
+  // 1. Rate Limit & Origin Check
+  const rateLimitRes = checkRateLimitAndOrigin(request);
+  if (rateLimitRes) return rateLimitRes;
+
   let body: Record<string, unknown>;
   try {
     body = await request.json();
   } catch {
+    return NextResponse.json({ success: false, error: "Invalid JSON body." }, { status: 400 });
+  }
+
+  // 2. Schema Validation
+  const result = appointmentSchema.safeParse(body);
+  if (!result.success) {
     return NextResponse.json(
-      { success: false, error: "Invalid JSON body." },
-      { status: 400 },
+      { success: false, error: result.error.issues[0].message },
+      { status: 400 }
     );
   }
 
-  const full_name = requiredString(body.full_name);
-  const phone = requiredString(body.phone);
-  const email = requiredString(body.email);
-  const patient_type = requiredString(body.patient_type);
-  const preferred_contact_method = requiredString(body.preferred_contact_method);
-  const insurance_type = requiredString(body.insurance_type);
-  const preferred_day_time = requiredString(body.preferred_day_time);
-  const service_requested = requiredString(body.service_requested);
-  const reason_for_visit = requiredString(body.reason_for_visit);
+  const {
+    full_name, phone, email, patient_type, preferred_contact_method,
+    insurance_type, preferred_day_time, service_requested, reason_for_visit,
+    fax_number, turnstileToken
+  } = result.data;
 
-  if (
-    !full_name ||
-    !phone ||
-    !email ||
-    !patient_type ||
-    !preferred_contact_method ||
-    !insurance_type ||
-    !preferred_day_time ||
-    !service_requested ||
-    !reason_for_visit
-  ) {
+  // 3. Honeypot Check (Silently drop if filled)
+  if (fax_number && fax_number.length > 0) {
+    return NextResponse.json({ success: true });
+  }
+
+  // 4. Turnstile Verification
+  const isHuman = await validateTurnstileToken(turnstileToken);
+  if (!isHuman) {
     return NextResponse.json(
-      {
-        success: false,
-        error:
-          "full_name, phone, email, patient_type, preferred_contact_method, insurance_type, preferred_day_time, service_requested, and reason_for_visit are required.",
-      },
-      { status: 400 },
+      { success: false, error: "Security verification failed. Please try again." },
+      { status: 403 }
     );
   }
 

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabaseClient } from "@/lib/supabase";
+import { z } from "zod";
+import { validateTurnstileToken, checkRateLimitAndOrigin } from "@/lib/security";
 import {
   RECEPTION_EMAIL,
   TECHA_EMAIL,
@@ -7,16 +9,27 @@ import {
   sendNotificationEmail,
 } from "@/lib/email";
 
-function requiredString(value: unknown): string {
-  return typeof value === "string" ? value.trim() : "";
-}
-
-function optionalString(value: unknown): string | null {
-  const trimmed = requiredString(value);
-  return trimmed || null;
-}
+const referralSchema = z.object({
+  referrer_name: z.string().min(1).max(100),
+  referrer_organization: z.string().min(1).max(150),
+  referrer_role: z.string().max(100).optional().nullable(),
+  referrer_phone: z.string().min(1).max(20),
+  referrer_email: z.string().email().max(254),
+  patient_name: z.string().min(1).max(100),
+  patient_phone: z.string().min(1).max(20),
+  patient_email: z.string().max(254).optional().nullable(),
+  reason_for_referral: z.string().min(1).max(2000),
+  additional_notes: z.string().max(2000).optional().nullable(),
+  consent_confirmed: z.boolean(),
+  fax_number: z.string().optional().nullable(), // Honeypot
+  turnstileToken: z.string().min(1, "Turnstile token required"),
+});
 
 export async function POST(request: Request) {
+  // 1. Rate Limit & Origin Check
+  const rateLimitRes = checkRateLimitAndOrigin(request);
+  if (rateLimitRes) return rateLimitRes;
+
   let body: Record<string, unknown>;
   try {
     body = await request.json();
@@ -27,34 +40,42 @@ export async function POST(request: Request) {
     );
   }
 
-  const referrer_name = requiredString(body.referrer_name);
-  const referrer_organization = requiredString(body.referrer_organization);
-  const referrer_role = optionalString(body.referrer_role);
-  const referrer_phone = requiredString(body.referrer_phone);
-  const referrer_email = requiredString(body.referrer_email);
-  const patient_name = requiredString(body.patient_name);
-  const patient_phone = requiredString(body.patient_phone);
-  const patient_email = optionalString(body.patient_email);
-  const reason_for_referral = requiredString(body.reason_for_referral);
-  const additional_notes = optionalString(body.additional_notes);
-  const consent_confirmed = body.consent_confirmed === true;
-
-  if (
-    !referrer_name ||
-    !referrer_organization ||
-    !referrer_phone ||
-    !referrer_email ||
-    !patient_name ||
-    !patient_phone ||
-    !reason_for_referral
-  ) {
+  // 2. Schema Validation
+  const result = referralSchema.safeParse(body);
+  if (!result.success) {
     return NextResponse.json(
-      {
-        success: false,
-        error:
-          "referrer_name, referrer_organization, referrer_phone, referrer_email, patient_name, patient_phone, and reason_for_referral are required.",
-      },
+      { success: false, error: result.error.issues[0].message },
       { status: 400 },
+    );
+  }
+
+  const {
+    referrer_name,
+    referrer_organization,
+    referrer_role,
+    referrer_phone,
+    referrer_email,
+    patient_name,
+    patient_phone,
+    patient_email,
+    reason_for_referral,
+    additional_notes,
+    consent_confirmed,
+    fax_number,
+    turnstileToken,
+  } = result.data;
+
+  // 3. Honeypot Check
+  if (fax_number && fax_number.length > 0) {
+    return NextResponse.json({ success: true });
+  }
+
+  // 4. Turnstile Verification
+  const isHuman = await validateTurnstileToken(turnstileToken);
+  if (!isHuman) {
+    return NextResponse.json(
+      { success: false, error: "Security verification failed. Please try again." },
+      { status: 403 },
     );
   }
 
