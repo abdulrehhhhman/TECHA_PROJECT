@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabaseClient } from "@/lib/supabase";
 import { z } from "zod";
-import { validateTurnstileToken, checkRateLimitAndOrigin } from "@/lib/security";
+import { checkRateLimitAndOrigin } from "@/lib/security";
 import {
   RECEPTION_EMAIL,
   TECHA_EMAIL,
@@ -20,7 +20,6 @@ const appointmentSchema = z.object({
   service_requested: z.string().min(1, "Service requested is required").max(100),
   reason_for_visit: z.string().min(1, "Reason for visit is required").max(100),
   fax_number: z.string().optional().nullable(), // Honeypot
-  turnstileToken: z.string().min(1, "Turnstile token required"),
 });
 
 export async function POST(request: Request) {
@@ -47,21 +46,12 @@ export async function POST(request: Request) {
   const {
     full_name, phone, email, patient_type, preferred_contact_method,
     insurance_type, preferred_day_time, service_requested, reason_for_visit,
-    fax_number, turnstileToken
+    fax_number
   } = result.data;
 
   // 3. Honeypot Check (Silently drop if filled)
   if (fax_number && fax_number.length > 0) {
     return NextResponse.json({ success: true });
-  }
-
-  // 4. Turnstile Verification
-  const isHuman = await validateTurnstileToken(turnstileToken);
-  if (!isHuman) {
-    return NextResponse.json(
-      { success: false, error: "Security verification failed. Please try again." },
-      { status: 403 }
-    );
   }
 
   const submitted_at = new Date().toISOString();
