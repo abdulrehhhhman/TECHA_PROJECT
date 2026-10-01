@@ -20,6 +20,9 @@ const appointmentSchema = z.object({
   service_requested: z.string().min(1, "Service requested is required").max(100),
   reason_for_visit: z.string().min(1, "Reason for visit is required").max(100),
   fax_number: z.string().optional().nullable(), // Honeypot
+  math_a: z.number(),
+  math_b: z.number(),
+  math_answer: z.number(),
 });
 
 export async function POST(request: Request) {
@@ -46,8 +49,16 @@ export async function POST(request: Request) {
   const {
     full_name, phone, email, patient_type, preferred_contact_method,
     insurance_type, preferred_day_time, service_requested, reason_for_visit,
-    fax_number
+    fax_number, math_a, math_b, math_answer
   } = result.data;
+
+  // Math CAPTCHA validation
+  if (math_a + math_b !== math_answer) {
+    return NextResponse.json(
+      { success: false, error: "Security verification failed. Incorrect math answer." },
+      { status: 403 }
+    );
+  }
 
   // 3. Honeypot Check (Silently drop if filled)
   if (fax_number && fax_number.length > 0) {

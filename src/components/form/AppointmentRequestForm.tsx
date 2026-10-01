@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import Button from "../Button";
 import { CheckIcon } from "../icons";
 import { Field, FieldGroup, RadioOption, Spinner, inputClasses } from "./shared";
@@ -47,6 +47,13 @@ export default function AppointmentRequestForm() {
     "idle",
   );
   const [errorMessage, setErrorMessage] = useState("");
+  const [mathA, setMathA] = useState(0);
+  const [mathB, setMathB] = useState(0);
+
+  useEffect(() => {
+    setMathA(Math.floor(Math.random() * 10) + 1);
+    setMathB(Math.floor(Math.random() * 10) + 1);
+  }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -67,6 +74,13 @@ export default function AppointmentRequestForm() {
       setStatus("error");
       return;
     }
+    
+    const answer = parseInt(String(data.get("math_answer")), 10);
+    if (answer !== mathA + mathB) {
+      setErrorMessage("Security check failed. Incorrect math answer.");
+      setStatus("error");
+      return;
+    }
 
     setStatus("submitting");
 
@@ -77,6 +91,9 @@ export default function AppointmentRequestForm() {
         body: JSON.stringify({
           ...values,
           fax_number: data.get("fax_number"),
+          math_a: mathA,
+          math_b: mathB,
+          math_answer: answer,
         }),
       });
       const result = await res.json();
@@ -234,6 +251,16 @@ export default function AppointmentRequestForm() {
             </option>
           ))}
         </select>
+      </Field>
+
+      <Field label={`Security Check: What is ${mathA} + ${mathB}?`}>
+        <input 
+          type="number" 
+          name="math_answer" 
+          required 
+          className={inputClasses}
+          placeholder="Enter the sum" 
+        />
       </Field>
 
       <div className="pt-2">

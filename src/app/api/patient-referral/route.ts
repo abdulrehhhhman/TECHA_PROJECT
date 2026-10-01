@@ -22,6 +22,9 @@ const referralSchema = z.object({
   additional_notes: z.string().max(2000).optional().nullable(),
   consent_confirmed: z.boolean(),
   fax_number: z.string().optional().nullable(), // Honeypot
+  math_a: z.number(),
+  math_b: z.number(),
+  math_answer: z.number(),
 });
 
 export async function POST(request: Request) {
@@ -61,7 +64,16 @@ export async function POST(request: Request) {
     additional_notes,
     consent_confirmed,
     fax_number,
+    math_a, math_b, math_answer
   } = result.data;
+
+  // Math CAPTCHA validation
+  if (math_a + math_b !== math_answer) {
+    return NextResponse.json(
+      { success: false, error: "Security verification failed. Incorrect math answer." },
+      { status: 403 }
+    );
+  }
 
   // 3. Honeypot Check
   if (fax_number && fax_number.length > 0) {

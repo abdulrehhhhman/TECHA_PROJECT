@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import Button from "./Button";
 import { CheckIcon } from "./icons";
 
@@ -61,6 +61,13 @@ export default function ContactForm() {
     "idle",
   );
   const [errorMessage, setErrorMessage] = useState("");
+  const [mathA, setMathA] = useState(0);
+  const [mathB, setMathB] = useState(0);
+
+  useEffect(() => {
+    setMathA(Math.floor(Math.random() * 10) + 1);
+    setMathB(Math.floor(Math.random() * 10) + 1);
+  }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -82,6 +89,13 @@ export default function ContactForm() {
       setStatus("error");
       return;
     }
+    
+    const answer = parseInt(String(data.get("math_answer")), 10);
+    if (answer !== mathA + mathB) {
+      setErrorMessage("Security check failed. Incorrect math answer.");
+      setStatus("error");
+      return;
+    }
 
     setStatus("submitting");
 
@@ -96,6 +110,9 @@ export default function ContactForm() {
           subject,
           message,
           fax_number: data.get("fax_number"), // Honeypot
+          math_a: mathA,
+          math_b: mathB,
+          math_answer: answer,
         }),
       });
       const result = await res.json();
@@ -178,6 +195,16 @@ export default function ContactForm() {
           required
           rows={5}
           className={`${inputClasses} resize-none`}
+        />
+      </Field>
+
+      <Field label={`Security Check: What is ${mathA} + ${mathB}?`}>
+        <input 
+          type="number" 
+          name="math_answer" 
+          required 
+          className={inputClasses}
+          placeholder="Enter the sum" 
         />
       </Field>
 

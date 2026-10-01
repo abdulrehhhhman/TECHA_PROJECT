@@ -16,6 +16,9 @@ const contactSchema = z.object({
   subject: z.string().min(1, "Subject is required").max(150),
   message: z.string().min(1, "Message is required").max(5000),
   fax_number: z.string().optional().nullable(), // Honeypot
+  math_a: z.number(),
+  math_b: z.number(),
+  math_answer: z.number(),
 });
 
 export async function POST(request: Request) {
@@ -39,7 +42,15 @@ export async function POST(request: Request) {
     );
   }
 
-  const { name, email, phone, subject, message, fax_number } = result.data;
+  const { name, email, phone, subject, message, fax_number, math_a, math_b, math_answer } = result.data;
+
+  // Math CAPTCHA validation
+  if (math_a + math_b !== math_answer) {
+    return NextResponse.json(
+      { success: false, error: "Security verification failed. Incorrect math answer." },
+      { status: 403 }
+    );
+  }
 
   // 3. Honeypot Check (Silently drop if filled)
   // 3. Honeypot Check (Silently drop if filled)
