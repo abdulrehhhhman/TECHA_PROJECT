@@ -101,6 +101,28 @@ h4 {
   border-radius: 4px;
 }
 
+@keyframes starburstPulse {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 6px 14px rgba(220, 38, 38, 0.35));
+  }
+  50% {
+    transform: translateY(-8px) scale(1.06);
+    filter: drop-shadow(0 14px 24px rgba(220, 38, 38, 0.5));
+  }
+}
+
+.animate-starburst {
+  animation: starburstPulse 2.4s ease-in-out infinite;
+  transform-origin: center center;
+  will-change: transform, filter;
+}
+
+.animate-starburst:hover {
+  animation-play-state: paused;
+  transform: translateY(-8px) scale(1.08);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
