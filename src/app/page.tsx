@@ -55,12 +55,42 @@ export const metadata: Metadata = {
   },
 };
 
+function SickVisitStarburst() {
+  return (
+    <div className="relative inline-flex items-center justify-center">
+      {/* 18-Pointed Starburst matching mockup */}
+      <svg
+        viewBox="0 0 120 120"
+        className="h-32 w-32 drop-shadow-lg transition-transform duration-300 group-hover:scale-105 sm:h-36 sm:w-36"
+        fill="#dc2626"
+      >
+        <polygon points="60,4 67.6,16.7 79.2,7.4 82,21.9 96,17.1 93.7,31.7 108.5,32 101.3,45 115.1,50.3 104,60 115.1,69.7 101.3,75 108.5,88 93.7,88.3 96,102.9 82,98.1 79.2,112.6 67.6,103.3 60,116 52.4,103.3 40.8,112.6 38,98.1 24,102.9 26.3,88.3 11.5,88 18.7,75 4.9,69.7 16,60 4.9,50.3 18.7,45 11.5,32 26.3,31.7 24,17.1 38,21.9 40.8,7.4 52.4,16.7" />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white select-none">
+        <span className="font-heading text-3xl font-black leading-none tracking-tight drop-shadow sm:text-4xl">
+          $59
+        </span>
+        <span className="mt-0.5 text-[11px] font-black uppercase tracking-wider text-white drop-shadow sm:text-xs">
+          SICK VISITS
+        </span>
+        <span className="text-[9px] font-semibold leading-tight text-white/95 sm:text-[9.5px]">
+          In-Office &amp; Telehealth
+        </span>
+        <span className="mt-0.5 text-[8.5px] font-bold uppercase tracking-wider text-amber-200 drop-shadow-sm sm:text-[9px]">
+          Self-Pay Only
+        </span>
+      </div>
+    </div>
+  );
+}
+
 const THREE_SERVICES = [
   {
     title: "Mental Health",
     subtitle: "Anxiety, Depression, ADHD, Bipolar & More",
-    icon: <BrainIcon className="h-8 w-8 text-secondary-deep" />,
-    iconBg: "bg-secondary-light/60 border border-secondary/30",
+    image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80",
+    icon: <BrainIcon className="h-7 w-7 text-white" />,
+    badgeBg: "bg-[#1c4b35]",
     checkmarks: [
       "Psychiatric evaluations",
       "Medication management",
@@ -73,8 +103,9 @@ const THREE_SERVICES = [
   {
     title: "Primary Care",
     subtitle: "Physicals, Diabetes, High Blood Pressure & More",
-    icon: <StethoscopeIcon className="h-8 w-8 text-primary-dark" />,
-    iconBg: "bg-primary-light border border-primary/25",
+    image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=600&q=80",
+    icon: <StethoscopeIcon className="h-7 w-7 text-white" />,
+    badgeBg: "bg-[#0e7490]",
     checkmarks: [
       "Sick visits",
       "Annual physicals",
@@ -88,8 +119,9 @@ const THREE_SERVICES = [
   {
     title: "Wellness",
     subtitle: "Weight Loss, IV Drips, Vitamin Shots & More",
-    icon: <LeafIcon className="h-8 w-8 text-primary-dark" />,
-    iconBg: "bg-primary-light/70 border border-primary/25",
+    image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80",
+    icon: <LeafIcon className="h-7 w-7 text-white" />,
+    badgeBg: "bg-[#15803d]",
     checkmarks: [
       "Weight management",
       "IV hydration therapy",
@@ -112,11 +144,11 @@ const TRUST_PILLARS = [
     label: "Whole-Person Wellness",
   },
   {
-    icon: <LeafIcon className="h-6 w-6 text-primary-dark" />,
+    icon: <ShieldIcon className="h-6 w-6 text-primary-dark" />,
     label: "Accessible Care for Mind, Body, & Community",
   },
   {
-    icon: <ShieldIcon className="h-6 w-6 text-primary-dark" />,
+    icon: <LeafIcon className="h-6 w-6 text-primary-dark" />,
     label: "Compassionate & Confidential",
   },
 ];
@@ -133,41 +165,42 @@ const INSURANCE_PARTNERS = [
 export default function HomePage() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#fbf9f5] via-white to-[#f6f9f7] pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
+      {/* Hero Section — 3 Column Layout matching Mockup */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#faf8f5] via-white to-[#f4f7f5] pb-16 pt-10 sm:pb-20 sm:pt-14 lg:pb-24 lg:pt-16 border-b border-border/40">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.15fr_0.85fr_1fr] lg:gap-8 xl:gap-12">
             
-            {/* Left: Headline & Welcome */}
+            {/* Column 1: Welcome Headline & Subtext */}
             <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary-light/60 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary-dark shadow-soft">
-                <span className="h-2 w-2 rounded-full bg-primary-dark animate-pulse" />
+              <div className="inline-block rounded-full border border-primary/25 bg-white/90 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary-dark shadow-soft">
                 NOW ACCEPTING NEW PATIENTS!
               </div>
 
-              <h1 className="mt-5 font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-[3.35rem]">
+              <h1 className="mt-5 font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-[3.25rem]">
                 Your Health. <br />
                 Your Mind. <br />
-                <span className="text-primary-dark">Your Wellness.</span>
+                <span className="text-primary-dark">Our Priority.</span>
               </h1>
 
-              <p className="mt-4 text-xl font-semibold text-secondary-deep">
-                Mental Health | Primary Care | Wellness
+              <p className="mt-4 text-lg font-semibold text-secondary-deep">
+                Medical Care | Mental Health | Wellness
               </p>
 
-              <p className="mt-3 max-w-xl text-lg leading-relaxed text-soft">
-                Accessible, judgment-free care for the whole person in Pearland, TX.
-                Whether you need a quick sick visit, ongoing mental health support,
-                or wellness therapies, we are here for you.
+              <p className="mt-2.5 max-w-lg text-base leading-relaxed text-soft">
+                Accessible care for mind, body, and community in Pearland, TX.
+                Personalized healthcare tailored to your unique journey.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Button href="#request-appointment" size="lg" variant="accent">
+                <a
+                  href="#request-appointment"
+                  className="inline-flex items-center gap-2 rounded-lg bg-[#cb9958] px-7 py-3.5 font-heading text-base font-semibold text-white shadow-soft transition-all duration-300 hover:bg-[#b88647] hover:shadow-soft-lg hover:-translate-y-0.5"
+                >
                   Request an Appointment &rarr;
-                </Button>
+                </a>
                 <a
                   href="tel:+13468785272"
-                  className="inline-flex items-center gap-2 text-lg font-semibold text-accent transition-colors hover:text-accent-dark"
+                  className="inline-flex items-center gap-2 text-base font-semibold text-accent transition-colors hover:text-accent-dark"
                 >
                   <PhoneIcon className="h-5 w-5" />
                   (346) 878-5272
@@ -192,84 +225,72 @@ export default function HomePage() {
               </div>
             </Reveal>
 
-            {/* Right: $59 Self-Pay Sick Visit Promotion Card */}
-            <Reveal delayMs={150}>
-              <div className="relative mx-auto w-full max-w-lg overflow-hidden rounded-2xl border-2 border-red-500/35 bg-white p-7 shadow-soft-xl sm:p-8">
-                {/* Subtle background glow */}
-                <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-red-100/60 blur-3xl" />
-                
-                <div className="relative flex items-center gap-4 sm:gap-5">
-                  {/* Clickable Starburst Badge */}
-                  <Link
-                    href="/request-appointment?service=sick-visit"
-                    className="group shrink-0 transition-transform duration-300 hover:scale-105"
-                    aria-label="Request a $59 Sick Visit"
-                  >
-                    <div className="relative flex h-28 w-28 items-center justify-center sm:h-32 sm:w-32">
-                      <svg
-                        viewBox="0 0 100 100"
-                        className="h-full w-full text-red-600 drop-shadow-md"
-                        fill="currentColor"
-                      >
-                        <path d="M50 0 L58 14 L73 7 L75 24 L91 22 L86 38 L100 42 L89 54 L99 64 L84 71 L88 88 L71 86 L69 102 L54 94 L46 102 L44 86 L27 88 L31 71 L16 64 L26 54 L15 42 L29 38 L24 22 L40 24 L42 7 Z" />
-                      </svg>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-                        <span className="font-heading text-2xl font-black leading-none sm:text-3xl">$59</span>
-                        <span className="text-[10px] font-extrabold uppercase leading-tight tracking-wider sm:text-[11px]">
-                          Sick Visits
-                        </span>
-                        <span className="text-[8px] font-semibold leading-none text-white/95 sm:text-[8.5px]">
-                          In-Office &amp; Telehealth
-                        </span>
-                        <span className="mt-0.5 text-[7.5px] font-bold uppercase tracking-wider text-amber-200 sm:text-[8px]">
-                          Self-Pay Only
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
+            {/* Column 2: Warm Welcoming Patient Image (Center) */}
+            <Reveal delayMs={100} className="hidden lg:block">
+              <div className="relative mx-auto aspect-[4/5] w-full max-w-[310px] overflow-hidden rounded-2xl shadow-soft-xl ring-1 ring-black/5">
+                <Image
+                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80"
+                  alt="Compassionate healthcare at Proactive Medical and Wellness"
+                  fill
+                  priority
+                  sizes="310px"
+                  className="object-cover"
+                />
+              </div>
+            </Reveal>
 
-                  <div>
-                    <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-red-700">
-                      Special Promotion
+            {/* Column 3: The $59 Sick Visits Card (Matching Mockup) */}
+            <Reveal delayMs={150}>
+              <div className="relative mx-auto flex w-full max-w-sm flex-col items-center rounded-3xl border border-red-200 bg-gradient-to-b from-[#fef5f3] via-[#fff8f6] to-white p-6 shadow-soft-xl sm:p-7">
+                
+                {/* Centered Starburst Badge */}
+                <Link
+                  href="/request-appointment?service=sick-visit"
+                  className="group transition-transform hover:scale-105"
+                  aria-label="Request a $59 Sick Visit"
+                >
+                  <SickVisitStarburst />
+                </Link>
+
+                {/* Checklist with Medical Icons */}
+                <div className="mt-6 w-full space-y-3.5 text-left">
+                  <div className="flex items-start gap-3">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+                      <StethoscopeIcon className="h-3.5 w-3.5" />
                     </span>
-                    <h2 className="mt-2 font-heading text-xl font-bold leading-tight text-foreground sm:text-2xl">
-                      Affordable Care. <br />
-                      Quality Service.
-                    </h2>
-                    <p className="mt-1 text-xs text-soft">
-                      Fast, compassionate medical attention when you need it most.
+                    <p className="text-[0.93rem] font-medium leading-snug text-foreground/85">
+                      Cold, Flu, Cough, Sore Throat, UTI &amp; More
+                    </p>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+                      <HeartPulseIcon className="h-3.5 w-3.5" />
+                    </span>
+                    <p className="text-[0.93rem] font-medium leading-snug text-foreground/85">
+                      Medical evaluation, treatment plan, and prescription when medically appropriate
+                    </p>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+                      <ShieldIcon className="h-3.5 w-3.5" />
+                    </span>
+                    <p className="text-[12px] leading-snug text-soft">
+                      Lab testing, procedures, and medication costs are additional.
                     </p>
                   </div>
                 </div>
 
-                {/* Features List */}
-                <div className="mt-6 space-y-2.5 text-[0.95rem] text-foreground/85">
-                  <div className="flex items-start gap-2.5">
-                    <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-red-100 text-xs font-bold text-red-700">✓</span>
-                    <span>Cold, Flu, Cough, Sore Throat, UTI &amp; More</span>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-red-100 text-xs font-bold text-red-700">✓</span>
-                    <span>Medical evaluation, treatment plan &amp; prescriptions when medically appropriate</span>
-                  </div>
-                </div>
-
-                {/* Prominent Red Button */}
-                <div className="mt-6">
+                {/* Big Bold Red Pill Button */}
+                <div className="mt-6 w-full">
                   <Link
                     href="/request-appointment?service=sick-visit"
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 px-6 py-3.5 text-center font-heading text-base font-bold text-white shadow-soft transition-all duration-200 hover:bg-red-700 hover:shadow-soft-lg"
+                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#dc2626] py-3.5 px-6 text-center font-heading text-sm font-bold tracking-wide text-white shadow-md transition-all duration-200 hover:bg-[#b91c1c] hover:shadow-lg active:scale-95 sm:text-base"
                   >
-                    REQUEST A $59 SICK VISIT &gt;
+                    Request a $59 Sick Visit &gt;
                   </Link>
                 </div>
-
-                {/* Disclaimer */}
-                <p className="mt-4 text-[11.5px] leading-relaxed text-soft">
-                  * For uncomplicated sick visits only. Medical evaluation and treatment plan included.
-                  Prescriptions provided when medically appropriate. Lab testing, procedures,
-                  and medication costs are additional.
-                </p>
               </div>
             </Reveal>
 
@@ -290,41 +311,53 @@ export default function HomePage() {
         <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-3">
           {THREE_SERVICES.map((service, i) => (
             <Reveal key={service.title} delayMs={i * 120} className="h-full">
-              <div className="flex h-full flex-col justify-between rounded-2xl border border-border bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg sm:p-8">
-                <div>
-                  <div className="flex items-center gap-4">
-                    <span className={`flex h-14 w-14 items-center justify-center rounded-xl ${service.iconBg}`}>
+              <div className="flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border bg-white shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg">
+                
+                {/* Header Image with Floating Icon Badge */}
+                <div className="relative h-44 w-full overflow-hidden">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  
+                  {/* Floating Circular Icon Badge Over Image */}
+                  <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+                    <span className={`flex h-14 w-14 items-center justify-center rounded-full ${service.badgeBg} shadow-soft-lg ring-4 ring-white`}>
                       {service.icon}
                     </span>
-                    <div>
-                      <h3 className="font-heading text-2xl font-bold text-foreground">
-                        {service.title}
-                      </h3>
-                    </div>
                   </div>
+                </div>
 
-                  <p className="mt-4 text-sm font-semibold text-secondary-deep">
+                <div className="flex-1 p-7 pt-9 text-center sm:p-8 sm:pt-10">
+                  <h3 className="font-heading text-2xl font-bold text-foreground">
+                    {service.title}
+                  </h3>
+
+                  <p className="mt-2 text-sm font-semibold text-secondary-deep">
                     {service.subtitle}
                   </p>
 
-                  <ul className="mt-5 space-y-2.5">
+                  <ul className="mt-6 space-y-2.5 text-left">
                     {service.checkmarks.map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-[0.98rem] text-foreground/80">
-                        <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-primary-dark" />
+                      <li key={item} className="flex items-start gap-2.5 text-[0.96rem] text-foreground/80">
+                        <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-border/70">
-                  <Button
+                <div className="p-7 pt-0 sm:p-8 sm:pt-0">
+                  <Link
                     href={service.href}
-                    variant="outline"
-                    className="w-full text-center"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#1c4b35] py-3 px-4 font-heading text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#143727] hover:shadow-soft"
                   >
                     {service.buttonText} &rarr;
-                  </Button>
+                  </Link>
                 </div>
               </div>
             </Reveal>
@@ -332,8 +365,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Trust Pillars Strip */}
-      <section className="border-y border-border/70 bg-primary-50/50 py-10">
+      {/* Trust Pillars Strip — Light Green Bar from Mockup */}
+      <section className="border-y border-[#d5e7db] bg-[#eaf4ed] py-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {TRUST_PILLARS.map((pillar) => (
@@ -341,7 +374,7 @@ export default function HomePage() {
                 key={pillar.label}
                 className="flex items-center gap-3 text-center sm:text-left"
               >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white shadow-soft">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-primary-dark shadow-soft">
                   {pillar.icon}
                 </span>
                 <span className="font-heading text-sm font-semibold text-foreground">
@@ -396,9 +429,10 @@ export default function HomePage() {
                 <p className="pt-2">
                   <a
                     href="tel:+13468785272"
-                    className="font-bold text-accent transition-colors hover:text-accent-dark"
+                    className="font-bold text-accent transition-colors hover:text-accent-dark flex items-center gap-2"
                   >
-                    Phone: (346) 878-5272
+                    <PhoneIcon className="h-4 w-4" />
+                    (346) 878-5272
                   </a>
                 </p>
               </div>
@@ -447,7 +481,7 @@ export default function HomePage() {
                 </li>
                 <li className="flex items-center gap-2.5">
                   <CheckIcon className="h-4 w-4 shrink-0 text-primary-dark" />
-                  <span>Comprehensive support for mind, body, &amp; community</span>
+                  <span>Support for mind, body, &amp; community</span>
                 </li>
               </ul>
             </div>

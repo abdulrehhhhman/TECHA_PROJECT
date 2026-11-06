@@ -14,17 +14,6 @@ export const SERVICE_OPTIONS = [
   "Wellness (Weight Loss, IV Drips, Vitamin Shots & More)",
 ] as const;
 
-const REQUIRED_FIELDS = [
-  "full_name",
-  "phone",
-  "email",
-  "patient_type",
-  "preferred_contact_method",
-  "insurance_type",
-  "preferred_day_time",
-  "service_requested",
-] as const;
-
 interface AppointmentRequestFormProps {
   initialService?: string;
   id?: string;
@@ -72,16 +61,26 @@ export default function AppointmentRequestForm({
     const form = e.currentTarget;
     const data = new FormData(form);
 
-    const values = Object.fromEntries(
-      REQUIRED_FIELDS.map((key) => [key, String(data.get(key) || "").trim()]),
-    ) as Record<(typeof REQUIRED_FIELDS)[number], string>;
+    const firstName = String(data.get("first_name") || "").trim();
+    const lastName = String(data.get("last_name") || "").trim();
+    const rawFullName = String(data.get("full_name") || "").trim();
+    const fullName = rawFullName || (firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName);
 
-    if (REQUIRED_FIELDS.some((key) => !values[key])) {
-      setErrorMessage("Please fill out all fields before submitting.");
+    const phone = String(data.get("phone") || "").trim();
+    const email = String(data.get("email") || "").trim();
+    const patientType = String(data.get("patient_type") || "").trim();
+    const contactMethod = String(data.get("preferred_contact_method") || "").trim();
+    const insuranceType = selectedInsurance || String(data.get("insurance_type") || "").trim();
+    const dayTime = String(data.get("preferred_day_time") || "").trim();
+    const serviceRequested = selectedService || String(data.get("service_requested") || "").trim();
+
+    if (!fullName || !phone || !email || !patientType || !contactMethod || !insuranceType || !dayTime || !serviceRequested) {
+      setErrorMessage("Please fill out all required fields before submitting.");
       setStatus("error");
       return;
     }
-    if (!EMAIL_PATTERN.test(values.email)) {
+
+    if (!EMAIL_PATTERN.test(email)) {
       setErrorMessage("Please enter a valid email address.");
       setStatus("error");
       return;
@@ -101,7 +100,14 @@ export default function AppointmentRequestForm({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...values,
+          full_name: fullName,
+          phone,
+          email,
+          patient_type: patientType,
+          preferred_contact_method: contactMethod,
+          insurance_type: insuranceType,
+          preferred_day_time: dayTime,
+          service_requested: serviceRequested,
           fax_number: data.get("fax_number"),
           math_a: mathA,
           math_b: mathB,
@@ -127,11 +133,11 @@ export default function AppointmentRequestForm({
 
   if (status === "success") {
     return (
-      <div className="flex flex-col items-center rounded-xl border border-primary/15 bg-primary-50 p-10 text-center shadow-soft sm:p-12">
-        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-soft">
-          <CheckIcon className="h-7 w-7" />
+      <div className="flex flex-col items-center rounded-2xl border border-primary/20 bg-primary-50 p-10 text-center shadow-soft sm:p-12">
+        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white shadow-soft">
+          <CheckIcon className="h-8 w-8" />
         </span>
-        <h3 className="mt-5 font-heading text-2xl font-semibold text-foreground">
+        <h3 className="mt-5 font-heading text-2xl font-bold text-foreground">
           Thank you! Your appointment request has been received.
         </h3>
         <p className="mt-3 max-w-md text-lg leading-relaxed text-soft">
@@ -140,7 +146,10 @@ export default function AppointmentRequestForm({
         </p>
         <p className="mt-4 text-[1.05rem] text-soft">
           If you need immediate assistance, please call{" "}
-          <a href="tel:+13468785272" className="font-semibold text-accent underline underline-offset-4 hover:text-accent-dark">
+          <a
+            href="tel:+13468785272"
+            className="font-bold text-accent underline underline-offset-4 hover:text-accent-dark"
+          >
             (346) 878-5272
           </a>
           .
@@ -154,7 +163,7 @@ export default function AppointmentRequestForm({
       <form
         onSubmit={handleSubmit}
         noValidate
-        className="space-y-5 rounded-xl border border-border bg-white p-6 shadow-soft-lg sm:p-9"
+        className="space-y-5 rounded-2xl border border-border bg-white p-7 shadow-soft-lg sm:p-9"
       >
         <input
           type="text"
@@ -168,24 +177,35 @@ export default function AppointmentRequestForm({
           <div
             role="alert"
             aria-live="assertive"
-            className="rounded-lg border border-secondary-dark/30 bg-secondary-50 px-4 py-3 text-[1.05rem] text-foreground"
+            className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-[1.02rem] text-red-800"
           >
             {errorMessage}
           </div>
         )}
 
-        <Field label="Full Name">
-          <input
-            type="text"
-            name="full_name"
-            required
-            placeholder="First and last name"
-            className={inputClasses}
-          />
-        </Field>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <Field label="First Name *">
+            <input
+              type="text"
+              name="first_name"
+              required
+              placeholder="First name"
+              className={inputClasses}
+            />
+          </Field>
+          <Field label="Last Name *">
+            <input
+              type="text"
+              name="last_name"
+              required
+              placeholder="Last name"
+              className={inputClasses}
+            />
+          </Field>
+        </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <Field label="Phone Number">
+          <Field label="Phone Number *">
             <input
               type="tel"
               name="phone"
@@ -194,7 +214,7 @@ export default function AppointmentRequestForm({
               className={inputClasses}
             />
           </Field>
-          <Field label="Email Address">
+          <Field label="Email Address *">
             <input
               type="email"
               name="email"
@@ -205,7 +225,7 @@ export default function AppointmentRequestForm({
           </Field>
         </div>
 
-        <FieldGroup label="New Patient or Existing Patient">
+        <FieldGroup label="New Patient or Existing Patient *">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <RadioOption
               name="patient_type"
@@ -221,7 +241,7 @@ export default function AppointmentRequestForm({
           </div>
         </FieldGroup>
 
-        <FieldGroup label="Preferred Contact Method">
+        <FieldGroup label="Preferred Contact Method *">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <RadioOption
               name="preferred_contact_method"
@@ -242,7 +262,7 @@ export default function AppointmentRequestForm({
           </div>
         </FieldGroup>
 
-        <FieldGroup label="Insurance or Self-Pay">
+        <FieldGroup label="Insurance or Self-Pay *">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <RadioOption
               name="insurance_type"
@@ -262,7 +282,7 @@ export default function AppointmentRequestForm({
           </div>
         </FieldGroup>
 
-        <Field label="Preferred Appointment Day/Time">
+        <Field label="Preferred Appointment Day/Time *">
           <input
             type="text"
             name="preferred_day_time"
@@ -272,7 +292,7 @@ export default function AppointmentRequestForm({
           />
         </Field>
 
-        <Field label="Service Requested">
+        <Field label="Service Requested *">
           <select
             name="service_requested"
             required
@@ -296,7 +316,7 @@ export default function AppointmentRequestForm({
           </select>
         </Field>
 
-        <Field label={`Security Check: What is ${mathA} + ${mathB}?`}>
+        <Field label={`Security Check: What is ${mathA} + ${mathB}? *`}>
           <input
             type="number"
             name="math_answer"
@@ -306,10 +326,11 @@ export default function AppointmentRequestForm({
           />
         </Field>
 
-        <div className="pt-2">
+        <div className="pt-3">
           <Button
             type="submit"
             size="lg"
+            variant="accent"
             disabled={status === "submitting"}
             className="w-full sm:w-auto"
           >
@@ -329,7 +350,7 @@ export default function AppointmentRequestForm({
       </form>
 
       {/* Friendly phone call banner directly beneath form */}
-      <div className="mt-4 flex items-center justify-center gap-3 rounded-xl border border-primary/20 bg-primary-50/80 px-5 py-4 text-center shadow-soft">
+      <div className="mt-4 flex items-center justify-center gap-3 rounded-2xl border border-primary/20 bg-[#f4f8f5] px-5 py-4 text-center shadow-soft">
         <PhoneIcon className="h-5 w-5 shrink-0 text-primary-dark" />
         <p className="text-[1.02rem] font-medium text-foreground">
           Don&apos;t see what you&apos;re looking for? Call us at{" "}
