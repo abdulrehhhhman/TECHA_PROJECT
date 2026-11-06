@@ -13,6 +13,8 @@ interface BaseProps {
 
 interface ButtonAsLink extends BaseProps {
   href: string;
+  target?: string;
+  rel?: string;
 }
 
 interface ButtonAsButton
@@ -54,12 +56,18 @@ export default function Button({
   const classes = `${base} ${sizes[size]} ${variants[variant]} ${className}`;
 
   if (href) {
+    const linkProps = rest as Partial<ButtonAsLink>;
     const isNewTabExternal = /^https?:/.test(href);
     const isSameTabExternal = /^(tel:|mailto:)/.test(href);
 
-    if (isNewTabExternal) {
+    if (isNewTabExternal || linkProps.target === "_blank") {
       return (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+        <a
+          href={href}
+          target={linkProps.target || "_blank"}
+          rel={linkProps.rel || "noopener noreferrer"}
+          className={classes}
+        >
           {children}
         </a>
       );

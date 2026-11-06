@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ChangeEvent, ReactNode } from "react";
 
 export const inputClasses =
   "w-full rounded-lg border border-border bg-white px-4 py-3.5 text-[1.05rem] text-foreground placeholder:text-soft/70 transition-all duration-200 focus:border-secondary-dark focus:outline-2 focus:outline-secondary focus:outline-offset-2 focus:shadow-[0_0_0_5px_rgba(201,154,95,0.15)]";
@@ -55,7 +55,7 @@ export function RadioOption({
   label: string;
   required?: boolean;
   checked?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
     <label className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-border bg-white px-4 py-3 text-[1.05rem] text-foreground transition-colors has-[:checked]:border-secondary-dark has-[:checked]:bg-secondary-50">
