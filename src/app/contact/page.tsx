@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
 };
 
-const ADDRESS = "722 Fairmont Parkway, Pasadena, TX 77504";
+const ADDRESS = "11960 Broadway Street, Suite 520, Pearland, TX 77584";
 const DIRECTIONS_HREF = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`;
 
 export default function ContactPage() {

@@ -2,33 +2,17 @@
 
 import { useState, useEffect, type FormEvent } from "react";
 import Button from "../Button";
-import { CheckIcon } from "../icons";
+import { CheckIcon, PhoneIcon } from "../icons";
 import { Field, FieldGroup, RadioOption, Spinner, inputClasses } from "./shared";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Kept intentionally short per the practice's request — a focused list is
-// easier for patients to scan than the full services list shown elsewhere.
-const SERVICE_OPTIONS = [
-  "Mental Health/Psychiatry",
-  "Psychiatric Evaluation",
-  "Medication Management",
-  "Anxiety & Depression",
-  "ADHD Evaluation/Management",
-  "Addiction Medicine/Suboxone (MAT)",
-  "Primary Care/Family Medicine",
-];
-
-// No free text here on purpose — keeps patients from typing detailed health
-// information into the form; specifics are discussed securely by phone.
-const REASON_OPTIONS = [
-  "New Patient – Mental Health/Psychiatry",
-  "New Patient – Primary Care",
-  "Medication Management",
-  "Follow-up/Existing Patient",
-  "Addiction Medicine",
-  "Other – Please Contact Me",
-];
+export const SERVICE_OPTIONS = [
+  "Mental Health (Anxiety, Depression, ADHD, Bipolar & More)",
+  "$59 Self-Pay Sick Visit (Cold, Flu, Cough, UTI & More)",
+  "Primary Care (Physicals, Diabetes, High Blood Pressure & More)",
+  "Wellness (Weight Loss, IV Drips, Vitamin Shots & More)",
+] as const;
 
 const REQUIRED_FIELDS = [
   "full_name",
@@ -39,10 +23,17 @@ const REQUIRED_FIELDS = [
   "insurance_type",
   "preferred_day_time",
   "service_requested",
-  "reason_for_visit",
 ] as const;
 
-export default function AppointmentRequestForm() {
+interface AppointmentRequestFormProps {
+  initialService?: string;
+  id?: string;
+}
+
+export default function AppointmentRequestForm({
+  initialService,
+  id,
+}: AppointmentRequestFormProps) {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">(
     "idle",
   );
@@ -50,9 +41,30 @@ export default function AppointmentRequestForm() {
   const [mathA, setMathA] = useState(0);
   const [mathB, setMathB] = useState(0);
 
+  const [selectedService, setSelectedService] = useState<string>(initialService || "");
+  const [selectedInsurance, setSelectedInsurance] = useState<string>("");
+
   useEffect(() => {
     setMathA(Math.floor(Math.random() * 10) + 1);
     setMathB(Math.floor(Math.random() * 10) + 1);
+
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const serviceParam = params.get("service")?.toLowerCase();
+
+      if (serviceParam) {
+        if (serviceParam.includes("sick") || serviceParam.includes("59")) {
+          setSelectedService("$59 Self-Pay Sick Visit (Cold, Flu, Cough, UTI & More)");
+          setSelectedInsurance("Self-pay");
+        } else if (serviceParam.includes("mental")) {
+          setSelectedService("Mental Health (Anxiety, Depression, ADHD, Bipolar & More)");
+        } else if (serviceParam.includes("primary")) {
+          setSelectedService("Primary Care (Physicals, Diabetes, High Blood Pressure & More)");
+        } else if (serviceParam.includes("wellness")) {
+          setSelectedService("Wellness (Weight Loss, IV Drips, Vitamin Shots & More)");
+        }
+      }
+    }
   }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -74,7 +86,7 @@ export default function AppointmentRequestForm() {
       setStatus("error");
       return;
     }
-    
+
     const answer = parseInt(String(data.get("math_answer")), 10);
     if (answer !== mathA + mathB) {
       setErrorMessage("Security check failed. Incorrect math answer.");
@@ -128,7 +140,7 @@ export default function AppointmentRequestForm() {
         </p>
         <p className="mt-4 text-[1.05rem] text-soft">
           If you need immediate assistance, please call{" "}
-          <a href="tel:+13468785272" className="font-semibold text-accent">
+          <a href="tel:+13468785272" className="font-semibold text-accent underline underline-offset-4 hover:text-accent-dark">
             (346) 878-5272
           </a>
           .
@@ -138,152 +150,198 @@ export default function AppointmentRequestForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      noValidate
-      className="space-y-5 rounded-xl border border-border bg-white p-7 shadow-soft-lg sm:p-9"
-    >
-      <input type="text" name="fax_number" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
-
-      {status === "error" && (
-        <div
-          role="alert"
-          aria-live="assertive"
-          className="rounded-lg border border-secondary-dark/30 bg-secondary-50 px-4 py-3 text-[1.05rem] text-foreground"
-        >
-          {errorMessage}
-        </div>
-      )}
-
-      <Field label="Full Name">
-        <input type="text" name="full_name" required className={inputClasses} />
-      </Field>
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <Field label="Phone Number">
-          <input type="tel" name="phone" required className={inputClasses} />
-        </Field>
-        <Field label="Email Address">
-          <input type="email" name="email" required className={inputClasses} />
-        </Field>
-      </div>
-
-      <FieldGroup label="New Patient or Existing Patient">
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <RadioOption name="patient_type" value="New Patient" label="New Patient" required />
-          <RadioOption
-            name="patient_type"
-            value="Existing Patient"
-            label="Existing Patient"
-          />
-        </div>
-      </FieldGroup>
-
-      <FieldGroup label="Preferred Contact Method">
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <RadioOption
-            name="preferred_contact_method"
-            value="Phone Call"
-            label="Phone Call"
-            required
-          />
-          <RadioOption name="preferred_contact_method" value="Email" label="Email" />
-          <RadioOption
-            name="preferred_contact_method"
-            value="Text Message"
-            label="Text Message"
-          />
-        </div>
-      </FieldGroup>
-
-      <FieldGroup label="Insurance or Self-Pay">
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <RadioOption
-            name="insurance_type"
-            value="I have insurance"
-            label="I have insurance"
-            required
-          />
-          <RadioOption name="insurance_type" value="Self-pay" label="Self-pay" />
-        </div>
-      </FieldGroup>
-
-      <Field label="Preferred Appointment Day/Time">
+    <div id={id}>
+      <form
+        onSubmit={handleSubmit}
+        noValidate
+        className="space-y-5 rounded-xl border border-border bg-white p-6 shadow-soft-lg sm:p-9"
+      >
         <input
           type="text"
-          name="preferred_day_time"
-          required
-          placeholder="e.g. Weekday mornings, Tuesday afternoon, etc."
-          className={inputClasses}
+          name="fax_number"
+          style={{ display: "none" }}
+          tabIndex={-1}
+          autoComplete="off"
         />
-      </Field>
 
-      <Field label="Service Requested">
-        <select
-          name="service_requested"
-          required
-          defaultValue=""
-          className={inputClasses}
-        >
-          <option value="" disabled>
-            Select a service
-          </option>
-          {SERVICE_OPTIONS.map((option) => (
-            <option key={option} value={option}>
-              {option}
+        {status === "error" && (
+          <div
+            role="alert"
+            aria-live="assertive"
+            className="rounded-lg border border-secondary-dark/30 bg-secondary-50 px-4 py-3 text-[1.05rem] text-foreground"
+          >
+            {errorMessage}
+          </div>
+        )}
+
+        <Field label="Full Name">
+          <input
+            type="text"
+            name="full_name"
+            required
+            placeholder="First and last name"
+            className={inputClasses}
+          />
+        </Field>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <Field label="Phone Number">
+            <input
+              type="tel"
+              name="phone"
+              required
+              placeholder="(346) 878-5272"
+              className={inputClasses}
+            />
+          </Field>
+          <Field label="Email Address">
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="name@example.com"
+              className={inputClasses}
+            />
+          </Field>
+        </div>
+
+        <FieldGroup label="New Patient or Existing Patient">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <RadioOption
+              name="patient_type"
+              value="New Patient"
+              label="New Patient"
+              required
+            />
+            <RadioOption
+              name="patient_type"
+              value="Existing Patient"
+              label="Existing Patient"
+            />
+          </div>
+        </FieldGroup>
+
+        <FieldGroup label="Preferred Contact Method">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <RadioOption
+              name="preferred_contact_method"
+              value="Phone Call"
+              label="Phone Call"
+              required
+            />
+            <RadioOption
+              name="preferred_contact_method"
+              value="Email"
+              label="Email"
+            />
+            <RadioOption
+              name="preferred_contact_method"
+              value="Text Message"
+              label="Text Message"
+            />
+          </div>
+        </FieldGroup>
+
+        <FieldGroup label="Insurance or Self-Pay">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <RadioOption
+              name="insurance_type"
+              value="I have insurance"
+              label="I have insurance"
+              required
+              checked={selectedInsurance === "I have insurance"}
+              onChange={() => setSelectedInsurance("I have insurance")}
+            />
+            <RadioOption
+              name="insurance_type"
+              value="Self-pay"
+              label="Self-pay"
+              checked={selectedInsurance === "Self-pay"}
+              onChange={() => setSelectedInsurance("Self-pay")}
+            />
+          </div>
+        </FieldGroup>
+
+        <Field label="Preferred Appointment Day/Time">
+          <input
+            type="text"
+            name="preferred_day_time"
+            required
+            placeholder="e.g. Weekday mornings, Tuesday afternoon, etc."
+            className={inputClasses}
+          />
+        </Field>
+
+        <Field label="Service Requested">
+          <select
+            name="service_requested"
+            required
+            value={selectedService}
+            onChange={(e) => {
+              setSelectedService(e.target.value);
+              if (e.target.value.includes("$59")) {
+                setSelectedInsurance("Self-pay");
+              }
+            }}
+            className={inputClasses}
+          >
+            <option value="" disabled>
+              Select a service
             </option>
-          ))}
-        </select>
-      </Field>
+            {SERVICE_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </Field>
 
-      <Field label="Reason for Visit">
-        <select
-          name="reason_for_visit"
-          required
-          defaultValue=""
-          className={inputClasses}
-        >
-          <option value="" disabled>
-            Select a reason
-          </option>
-          {REASON_OPTIONS.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </Field>
+        <Field label={`Security Check: What is ${mathA} + ${mathB}?`}>
+          <input
+            type="number"
+            name="math_answer"
+            required
+            className={inputClasses}
+            placeholder="Enter the sum"
+          />
+        </Field>
 
-      <Field label={`Security Check: What is ${mathA} + ${mathB}?`}>
-        <input 
-          type="number" 
-          name="math_answer" 
-          required 
-          className={inputClasses}
-          placeholder="Enter the sum" 
-        />
-      </Field>
+        <div className="pt-2">
+          <Button
+            type="submit"
+            size="lg"
+            disabled={status === "submitting"}
+            className="w-full sm:w-auto"
+          >
+            {status === "submitting" ? (
+              <>
+                <Spinner />
+                Sending...
+              </>
+            ) : (
+              "Submit Request"
+            )}
+          </Button>
+          <p className="mt-4 text-sm leading-relaxed text-soft">
+            Your information is confidential and shared only with our care team.
+          </p>
+        </div>
+      </form>
 
-      <div className="pt-2">
-        <Button
-          type="submit"
-          size="lg"
-          disabled={status === "submitting"}
-          className="w-full sm:w-auto"
-        >
-          {status === "submitting" ? (
-            <>
-              <Spinner />
-              Sending...
-            </>
-          ) : (
-            "Submit Request"
-          )}
-        </Button>
-        <p className="mt-4 text-sm leading-relaxed text-soft">
-          Your information is confidential and shared only with our care
-          team.
+      {/* Friendly phone call banner directly beneath form */}
+      <div className="mt-4 flex items-center justify-center gap-3 rounded-xl border border-primary/20 bg-primary-50/80 px-5 py-4 text-center shadow-soft">
+        <PhoneIcon className="h-5 w-5 shrink-0 text-primary-dark" />
+        <p className="text-[1.02rem] font-medium text-foreground">
+          Don&apos;t see what you&apos;re looking for? Call us at{" "}
+          <a
+            href="tel:+13468785272"
+            className="font-bold text-accent underline decoration-accent/40 underline-offset-4 hover:text-accent-dark"
+          >
+            346-878-5272
+          </a>
+          . We&apos;re happy to help!
         </p>
       </div>
-    </form>
+    </div>
   );
 }

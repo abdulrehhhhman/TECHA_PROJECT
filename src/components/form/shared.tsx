@@ -47,11 +47,15 @@ export function RadioOption({
   value,
   label,
   required,
+  checked,
+  onChange,
 }: {
   name: string;
   value: string;
   label: string;
   required?: boolean;
+  checked?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
     <label className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-border bg-white px-4 py-3 text-[1.05rem] text-foreground transition-colors has-[:checked]:border-secondary-dark has-[:checked]:bg-secondary-50">
@@ -60,6 +64,8 @@ export function RadioOption({
         name={name}
         value={value}
         required={required}
+        checked={checked}
+        onChange={onChange}
         className="h-4 w-4 accent-secondary-dark"
       />
       {label}

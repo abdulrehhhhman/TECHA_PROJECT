@@ -18,7 +18,7 @@ const appointmentSchema = z.object({
   insurance_type: z.string().min(1, "Insurance type is required").max(50),
   preferred_day_time: z.string().min(1, "Preferred day/time is required").max(200),
   service_requested: z.string().min(1, "Service requested is required").max(100),
-  reason_for_visit: z.string().min(1, "Reason for visit is required").max(100),
+  reason_for_visit: z.string().max(100).optional().nullable(),
   fax_number: z.string().optional().nullable(), // Honeypot
   math_a: z.number(),
   math_b: z.number(),
@@ -69,6 +69,7 @@ export async function POST(request: Request) {
 
   try {
     const supabase = getSupabaseClient();
+    const effectiveReason = reason_for_visit?.trim() || service_requested;
     const { error } = await supabase.from("consultation_requests").insert({
       full_name,
       phone,
@@ -78,7 +79,7 @@ export async function POST(request: Request) {
       insurance_type,
       preferred_day_time,
       service_requested,
-      reason_for_visit,
+      reason_for_visit: effectiveReason,
       submitted_at,
     });
 
@@ -107,7 +108,7 @@ export async function POST(request: Request) {
     <p><strong>Insurance:</strong> ${escapeHtml(insurance_type)}</p>
     <p><strong>Preferred Day/Time:</strong> ${escapeHtml(preferred_day_time)}</p>
     <p><strong>Service Requested:</strong> ${escapeHtml(service_requested)}</p>
-    <p><strong>Reason for Visit:</strong> ${escapeHtml(reason_for_visit)}</p>
+    ${reason_for_visit ? `<p><strong>Reason for Visit:</strong> ${escapeHtml(reason_for_visit)}</p>` : ""}
     <p><strong>Submitted At:</strong> ${escapeHtml(submitted_at)}</p>
   `;
 

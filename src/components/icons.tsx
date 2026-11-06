@@ -126,3 +126,43 @@ export function MapPinIcon({ className = "h-7 w-7" }: IconProps) {
     </svg>
   );
 }
+
+export function BrainIcon({ className = "h-7 w-7" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M9.5 2A4.5 4.5 0 0 0 5 6.5c0 .7.17 1.36.47 1.95A4.5 4.5 0 0 0 4 12a4.5 4.5 0 0 0 2.16 3.86A4.5 4.5 0 0 0 10 20h2V2h-2.5Z" />
+      <path d="M14.5 2A4.5 4.5 0 0 1 19 6.5c0 .7-.17 1.36-.47 1.95A4.5 4.5 0 0 1 20 12a4.5 4.5 0 0 1-2.16 3.86A4.5 4.5 0 0 1 14 20h-2V2h2.5Z" />
+    </svg>
+  );
+}
+
+export function StethoscopeIcon({ className = "h-7 w-7" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M4.5 3v5a5.5 5.5 0 0 0 11 0V3" />
+      <path d="M3 3h3M14 3h3" />
+      <path d="M10 13.5V17a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3v-2" />
+      <circle cx="18" cy="14" r="2" />
+    </svg>
+  );
+}
+
+export function LeafIcon({ className = "h-7 w-7" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M11 20A7 7 0 0 1 4 13C4 7 11 3 20 3c0 9-4 16-11 17Z" />
+      <path d="M8 16c2.5-2.5 5-5 8-8" />
+    </svg>
+  );
+}
+
+export function UsersIcon({ className = "h-7 w-7" }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  );
+}

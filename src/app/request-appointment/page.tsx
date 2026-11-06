@@ -3,17 +3,35 @@ import AppointmentRequestForm from "@/components/form/AppointmentRequestForm";
 import Reveal from "@/components/Reveal";
 import { ClockIcon, PhoneIcon, ShieldIcon } from "@/components/icons";
 
-const PAGE_TITLE = "Request an Appointment";
+const PAGE_TITLE = "Proactive Medical & Wellness | Request an Appointment";
 const PAGE_DESCRIPTION =
-  "Fill out the form below and a member of our team will contact you to confirm and schedule your appointment at Proactive Medical and Wellness.";
+  "Your Health Matters Here! Mental Health, Primary Care & Wellness. $59 Self-Pay Sick Visits. New Patients Welcome!";
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  title: {
+    absolute: PAGE_TITLE,
+  },
   description: PAGE_DESCRIPTION,
   openGraph: {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
+    url: "https://www.proactivemedicalandwellness.com/request-appointment",
+    siteName: "Proactive Medical & Wellness",
     type: "website",
+    images: [
+      {
+        url: "/images/promo-preview.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Proactive Medical & Wellness - Request an Appointment",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: ["/images/promo-preview.jpg"],
   },
 };
 

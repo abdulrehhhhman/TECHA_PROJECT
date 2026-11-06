@@ -129,7 +129,7 @@ export default function Footer() {
                   reception@proactivemedicalandwellness.com
                 </a>
               </li>
-              <li>722 Fairmont Parkway<br />Pasadena, TX 77504</li>
+              <li>11960 Broadway Street, Suite 520<br />Pearland, TX 77584</li>
               <li className="pt-1 text-white/60">
                 Mon–Fri: 8am – 5pm
                 <br />
