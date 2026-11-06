@@ -404,7 +404,7 @@ export default function HomePage() {
               </div>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button href={DIRECTIONS_HREF} target="_blank" rel="noopener noreferrer" variant="accent" size="sm">
+                <Button href={DIRECTIONS_HREF} variant="accent" size="sm">
                   Get Directions &rarr;
                 </Button>
                 <Button href={REQUEST_APPOINTMENT_PATH} variant="outline" size="sm">
