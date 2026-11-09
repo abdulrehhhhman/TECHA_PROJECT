@@ -4,25 +4,26 @@ import Link from "next/link";
 import techaHeadshot from "../../public/images/techa-headshot.jpg";
 import Button from "@/components/Button";
 import Reveal from "@/components/Reveal";
-import SectionHeading from "@/components/SectionHeading";
 import AppointmentRequestForm from "@/components/form/AppointmentRequestForm";
 import { JANE_LOGIN_URL } from "@/lib/jane";
 import { REFER_A_PATIENT_PATH, REQUEST_APPOINTMENT_PATH } from "@/lib/routes";
 import {
   BrainIcon,
+  CalendarIcon,
   CheckIcon,
-  HeartPulseIcon,
   LeafIcon,
   MapPinIcon,
   PhoneIcon,
-  ShieldIcon,
+  PillIcon,
   StethoscopeIcon,
+  ThermometerIcon,
+  TrophyIcon,
   UsersIcon,
 } from "@/components/icons";
 
-const PAGE_TITLE = "Proactive Medical & Wellness | Pearland, TX";
+const PAGE_TITLE = "Proactive Medical and Wellness | Accessible Care for Mind & Body";
 const PAGE_DESCRIPTION =
-  "Your Health. Your Mind. Your Wellness. Comprehensive Mental Health, Primary Care, and Wellness services in Pearland, TX. $59 Self-Pay Sick Visits available.";
+  "Accessible, compassionate care for mind, body, and community. Personalized treatment and support for every stage of your health journey. Mental Health, Addiction Medicine, Medical Care, and Wellness.";
 
 const ADDRESS = "11960 Broadway Street, Suite 520, Pearland, TX 77584";
 const DIRECTIONS_HREF = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`;
@@ -36,14 +37,14 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     url: "https://www.proactivemedicalandwellness.com",
-    siteName: "Proactive Medical & Wellness",
+    siteName: "Proactive Medical and Wellness",
     type: "website",
     images: [
       {
         url: "/images/promo-preview.jpg",
         width: 1200,
         height: 630,
-        alt: "Proactive Medical & Wellness - Pearland, TX",
+        alt: "Proactive Medical and Wellness",
       },
     ],
   },
@@ -55,98 +56,46 @@ export const metadata: Metadata = {
   },
 };
 
-function SickVisitStarburst() {
-  return (
-    <div className="relative inline-flex items-center justify-center animate-starburst cursor-pointer">
-      {/* 18-Pointed Sharp Red Starburst */}
-      <svg
-        viewBox="0 0 120 120"
-        className="h-36 w-36 transition-transform duration-300 sm:h-40 sm:w-40"
-        fill="#dc2626"
-      >
-        <polygon points="60,4 67.6,16.7 79.2,7.4 82,21.9 96,17.1 93.7,31.7 108.5,32 101.3,45 115.1,50.3 104,60 115.1,69.7 101.3,75 108.5,88 93.7,88.3 96,102.9 82,98.1 79.2,112.6 67.6,103.3 60,116 52.4,103.3 40.8,112.6 38,98.1 24,102.9 26.3,88.3 11.5,88 18.7,75 4.9,69.7 16,60 4.9,50.3 18.7,45 11.5,32 26.3,31.7 24,17.1 38,21.9 40.8,7.4 52.4,16.7" />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white select-none">
-        <span className="font-heading text-4xl font-black leading-none tracking-tight drop-shadow sm:text-[2.75rem]">
-          $59
-        </span>
-        <span className="mt-1 text-xs font-black uppercase tracking-wider text-white drop-shadow sm:text-[13px]">
-          SICK VISITS
-        </span>
-        <span className="text-[9px] font-semibold leading-tight text-white/95 sm:text-[10px]">
-          In-Office &amp; Telehealth
-        </span>
-        <span className="mt-0.5 text-[9px] font-black uppercase tracking-wider text-[#ffd700] drop-shadow-sm sm:text-[10px]">
-          SELF-PAY ONLY
-        </span>
-      </div>
-    </div>
-  );
-}
-
-const THREE_SERVICES = [
+const FOUR_SERVICES = [
   {
     title: "Mental Health",
-    subtitle: "Anxiety, Depression, ADHD, Bipolar & More",
-    icon: <BrainIcon className="h-8 w-8 text-white" />,
-    badgeBg: "bg-[#1c4b35]",
-    checkmarks: [
-      "Psychiatric evaluations",
-      "Medication management",
-      "Therapy options",
-      "Adolescents (13–17) welcome",
-    ],
-    buttonText: "Request Mental Health Appointment",
+    icon: <BrainIcon className="h-9 w-9 text-[#6b21a8]" />,
+    cardBg: "bg-[#f8f5fc] border-purple-200/80 hover:border-purple-300",
+    titleColor: "text-[#4a154b]",
+    arrowBg: "bg-[#4a154b] text-white hover:bg-[#380e39]",
+    description:
+      "Psychiatric evaluations, medication management, and ongoing support for anxiety, depression, bipolar disorder, ADHD, PTSD, and more.",
     href: "/request-appointment?service=mental-health",
   },
   {
-    title: "Primary Care",
-    subtitle: "Physicals, Diabetes, High Blood Pressure & More",
-    icon: <StethoscopeIcon className="h-8 w-8 text-white" />,
-    badgeBg: "bg-[#0e7490]",
-    checkmarks: [
-      "Sick visits",
-      "Annual physicals",
-      "Chronic condition management",
-      "Preventive care",
-      "Women's health",
-    ],
-    buttonText: "Request Primary Care Appointment",
+    title: "Addiction Medicine",
+    icon: <PillIcon className="h-9 w-9 text-[#0d9488]" />,
+    cardBg: "bg-[#f0faf8] border-teal-200/80 hover:border-teal-300",
+    titleColor: "text-[#0f766e]",
+    arrowBg: "bg-[#0f766e] text-white hover:bg-[#115e59]",
+    description:
+      "Suboxone treatment, medication-assisted treatment (MAT), substance use treatment, and recovery support.",
+    href: "/request-appointment?service=addiction-medicine",
+  },
+  {
+    title: "Medical Care",
+    icon: <StethoscopeIcon className="h-9 w-9 text-[#0284c7]" />,
+    cardBg: "bg-[#f0f7fd] border-sky-200/80 hover:border-sky-300",
+    titleColor: "text-[#0369a1]",
+    arrowBg: "bg-[#0284c7] text-white hover:bg-[#0369a1]",
+    description:
+      "Sick visits, chronic condition management, preventive care, women's and men's health, and physical exams.",
     href: "/request-appointment?service=primary-care",
   },
   {
     title: "Wellness",
-    subtitle: "Weight Loss, IV Drips, Vitamin Shots & More",
-    icon: <LeafIcon className="h-8 w-8 text-white" />,
-    badgeBg: "bg-[#15803d]",
-    checkmarks: [
-      "Weight management",
-      "IV hydration therapy",
-      "Vitamin injections",
-      "Men's & women's wellness",
-      "Specialty wellness services",
-    ],
-    buttonText: "Request Wellness Appointment",
+    icon: <LeafIcon className="h-9 w-9 text-[#b45309]" />,
+    cardBg: "bg-[#fdfbf2] border-amber-200/80 hover:border-amber-300",
+    titleColor: "text-[#92400e]",
+    arrowBg: "bg-[#b45309] text-white hover:bg-[#92400e]",
+    description:
+      "Weight management, IV therapy, wellness injections, and custom wellness packages.",
     href: "/request-appointment?service=wellness",
-  },
-];
-
-const TRUST_PILLARS = [
-  {
-    icon: <UsersIcon className="h-6 w-6 text-primary-dark" />,
-    label: "Patient Focused",
-  },
-  {
-    icon: <HeartPulseIcon className="h-6 w-6 text-primary-dark" />,
-    label: "Whole-Person Wellness",
-  },
-  {
-    icon: <ShieldIcon className="h-6 w-6 text-primary-dark" />,
-    label: "Accessible Care for Mind, Body, & Community",
-  },
-  {
-    icon: <LeafIcon className="h-6 w-6 text-primary-dark" />,
-    label: "Compassionate & Confidential",
   },
 ];
 
@@ -162,49 +111,61 @@ const INSURANCE_PARTNERS = [
 export default function HomePage() {
   return (
     <>
-      {/* Hero Section — Clean 2-Column Layout */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#faf8f5] via-white to-[#f4f7f5] pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20 border-b border-border/40">
+      {/* Hero Section — Matching Exact Mockup */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#faf8f5] via-white to-[#f4f7f5] pb-12 pt-8 sm:pb-16 sm:pt-12 lg:pb-20 lg:pt-14 border-b border-border/40">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.25fr_0.85fr] lg:gap-16 xl:gap-20">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-12 xl:gap-16">
             
-            {/* Left Column: Welcome Headline & Subtext */}
+            {/* Left Column: Headline, Services & CTA */}
             <Reveal>
-              <div className="inline-block rounded-full border border-primary/25 bg-white/95 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary-dark shadow-soft">
-                NOW ACCEPTING NEW PATIENTS!
+              {/* Eyebrow with decorative line */}
+              <div className="flex items-center gap-3">
+                <span className="h-0.5 w-10 sm:w-14 bg-teal-600 rounded-full" />
+                <span className="font-heading text-xs sm:text-sm font-bold uppercase tracking-widest text-teal-700">
+                  YOUR MIND. YOUR HEALTH.
+                </span>
               </div>
 
-              <h1 className="mt-5 font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-[3.5rem]">
-                Your Health. <br />
-                Your Mind. <br />
-                <span className="text-primary-dark">Our Priority.</span>
+              {/* Main Headline */}
+              <h1 className="mt-4 font-heading text-4xl font-bold leading-[1.15] tracking-tight text-[#4a154b] sm:text-5xl lg:text-[3.25rem]">
+                Mental Health, <br />
+                Addiction Medicine, <br />
+                Medical Care <span className="text-teal-600">&amp;</span> Wellness
               </h1>
 
-              <p className="mt-4 text-xl font-semibold text-secondary-deep">
-                Medical Care | Mental Health | Wellness
+              {/* Supporting Description */}
+              <p className="mt-5 max-w-xl text-base sm:text-lg leading-relaxed text-foreground/80 font-normal">
+                Accessible, compassionate care for mind, body, and community. Personalized treatment and support for every stage of your health journey.
               </p>
 
-              <p className="mt-3 max-w-xl text-lg leading-relaxed text-soft">
-                Accessible care for mind, body, and community in Pearland, TX.
-                Personalized healthcare tailored to your unique journey.
-              </p>
-
+              {/* CTA Buttons Side-by-Side */}
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <a
                   href="#request-appointment"
-                  className="inline-flex items-center gap-2 rounded-lg bg-[#cb9958] px-7 py-3.5 font-heading text-base font-semibold text-white shadow-soft transition-all duration-300 hover:bg-[#b88647] hover:shadow-soft-lg hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2.5 rounded-xl bg-[#4a154b] px-6 py-3.5 font-heading text-base font-semibold text-white shadow-soft transition-all duration-300 hover:bg-[#380e39] hover:shadow-soft-lg hover:-translate-y-0.5"
                 >
-                  Request an Appointment &rarr;
+                  <CalendarIcon className="h-5 w-5" />
+                  Request Appointment
                 </a>
+
                 <a
-                  href="tel:+13468785272"
-                  className="inline-flex items-center gap-2 text-base font-semibold text-accent transition-colors hover:text-accent-dark"
+                  href="#request-appointment"
+                  className="inline-flex items-center gap-2 rounded-xl border-2 border-[#4a154b] bg-white px-6 py-3 font-heading text-base font-semibold text-[#4a154b] shadow-soft transition-all duration-300 hover:bg-purple-50 hover:-translate-y-0.5"
                 >
-                  <PhoneIcon className="h-5 w-5" />
-                  (346) 878-5272
+                  <UsersIcon className="h-5 w-5" />
+                  New Patients Welcome
                 </a>
               </div>
 
+              {/* Quick Links */}
               <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-semibold text-soft">
+                <a
+                  href="tel:+13468785272"
+                  className="inline-flex items-center gap-1.5 text-accent hover:text-accent-dark"
+                >
+                  <PhoneIcon className="h-4 w-4" />
+                  (346) 878-5272
+                </a>
                 <a
                   href={JANE_LOGIN_URL}
                   target="_blank"
@@ -222,57 +183,20 @@ export default function HomePage() {
               </div>
             </Reveal>
 
-            {/* Right Column: The $59 Sick Visits Card with Continuous Hover/Pulse Animation */}
-            <Reveal delayMs={150}>
-              <div className="relative mx-auto flex w-full max-w-md flex-col items-center rounded-3xl border border-red-200 bg-gradient-to-b from-[#fef5f3] via-[#fff8f6] to-white p-7 shadow-soft-xl sm:p-9">
-                
-                {/* Continuously Animated Floating/Hovering Starburst Badge */}
-                <Link
-                  href="/request-appointment?service=sick-visit"
-                  className="group"
-                  aria-label="Request a $59 Sick Visit"
-                >
-                  <SickVisitStarburst />
-                </Link>
-
-                {/* Checklist with Medical Icons */}
-                <div className="mt-7 w-full space-y-3.5 text-left">
-                  <div className="flex items-start gap-3">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
-                      <StethoscopeIcon className="h-3.5 w-3.5" />
-                    </span>
-                    <p className="text-[0.95rem] font-medium leading-snug text-foreground/85">
-                      Cold, Flu, Cough, Sore Throat, UTI &amp; More
-                    </p>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
-                      <HeartPulseIcon className="h-3.5 w-3.5" />
-                    </span>
-                    <p className="text-[0.95rem] font-medium leading-snug text-foreground/85">
-                      Medical evaluation, treatment plan, and prescription when medically appropriate
-                    </p>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
-                      <ShieldIcon className="h-3.5 w-3.5" />
-                    </span>
-                    <p className="text-[12.5px] leading-snug text-soft">
-                      Lab testing, procedures, and medication costs are additional.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Big Bold Red Pill Button */}
-                <div className="mt-7 w-full">
-                  <Link
-                    href="/request-appointment?service=sick-visit"
-                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#dc2626] py-3.5 px-6 text-center font-heading text-sm font-bold tracking-wide text-white shadow-md transition-all duration-200 hover:bg-[#b91c1c] hover:shadow-lg active:scale-95 sm:text-base"
-                  >
-                    Request a $59 Sick Visit &gt;
-                  </Link>
+            {/* Right Column: Welcoming Diverse Everyday People Photo with Wave Accent */}
+            <Reveal delayMs={120}>
+              <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
+                <div className="relative aspect-[584/240] sm:aspect-[584/255] w-full overflow-hidden rounded-3xl shadow-soft-xl border border-border/50 bg-white">
+                  <Image
+                    src="/images/hero-diverse-people.jpg"
+                    alt="Diverse, welcoming group of smiling everyday people"
+                    fill
+                    priority
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-cover object-top"
+                  />
+                  {/* Subtle decorative curved swoosh accent at bottom right */}
+                  <div className="pointer-events-none absolute -bottom-1 -right-1 h-14 w-44 rounded-tl-full bg-gradient-to-r from-teal-500/80 to-[#4a154b]/90 opacity-90 blur-xs" />
                 </div>
               </div>
             </Reveal>
@@ -281,109 +205,231 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Three Service Sections (Clean Minimalist Cards Without Photos) */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+      {/* Our Services Section — 4 Horizontal Categories matching Mockup */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        
+        {/* Decorative Centered Heading */}
         <Reveal>
-          <SectionHeading
-            eyebrow="Our Services"
-            title="Comprehensive Healthcare for Mind & Body"
-            description="Personalized care designed around your needs. Select a service to get started with an appointment request."
-          />
+          <div className="flex items-center justify-center gap-4 mb-12">
+            <div className="h-0.5 w-16 sm:w-28 bg-gradient-to-r from-transparent to-[#4a154b]/30 rounded-full" />
+            <h2 className="font-heading text-3xl font-bold text-[#4a154b] sm:text-4xl text-center">
+              Our Services
+            </h2>
+            <div className="h-0.5 w-16 sm:w-28 bg-gradient-to-l from-transparent to-[#4a154b]/30 rounded-full" />
+          </div>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-3">
-          {THREE_SERVICES.map((service, i) => (
-            <Reveal key={service.title} delayMs={i * 120} className="h-full">
-              <div className="flex h-full flex-col justify-between rounded-3xl border border-border bg-white p-8 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-soft-lg sm:p-9">
-                
+        {/* 4 Cards in 1 Row */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {FOUR_SERVICES.map((service, i) => (
+            <Reveal key={service.title} delayMs={i * 80} className="h-full">
+              <div
+                className={`flex h-full flex-col justify-between rounded-2xl border p-6 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-soft-lg ${service.cardBg}`}
+              >
                 <div>
-                  {/* Clean Circular Icon Badge */}
-                  <div className="flex items-center gap-4">
-                    <span className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl ${service.badgeBg} shadow-soft`}>
-                      {service.icon}
-                    </span>
-                    <div>
-                      <h3 className="font-heading text-2xl font-bold text-foreground">
-                        {service.title}
-                      </h3>
-                      <p className="mt-1 text-xs font-semibold text-secondary-deep">
-                        {service.subtitle}
-                      </p>
-                    </div>
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="shrink-0">{service.icon}</span>
+                    <Link
+                      href={service.href}
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-bold shadow-sm transition-transform hover:scale-110 ${service.arrowBg}`}
+                      aria-label={`Learn more about ${service.title}`}
+                    >
+                      &rarr;
+                    </Link>
                   </div>
 
-                  <div className="mt-6 border-t border-border/60 pt-6">
-                    <ul className="space-y-3 text-left">
-                      {service.checkmarks.map((item) => (
-                        <li key={item} className="flex items-start gap-2.5 text-[0.98rem] text-foreground/80">
-                          <CheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <h3 className={`mt-4 font-heading text-xl font-bold ${service.titleColor}`}>
+                    {service.title}
+                  </h3>
+
+                  <p className="mt-2.5 text-sm leading-relaxed text-foreground/80">
+                    {service.description}
+                  </p>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-border/60">
+                <div className="mt-6 pt-4 border-t border-black/5">
                   <Link
                     href={service.href}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1c4b35] py-3.5 px-4 font-heading text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#143727] hover:shadow-soft"
+                    className={`text-xs font-bold uppercase tracking-wider ${service.titleColor} hover:underline inline-flex items-center gap-1`}
                   >
-                    {service.buttonText} &rarr;
+                    Request Care &rarr;
                   </Link>
                 </div>
               </div>
             </Reveal>
           ))}
         </div>
-      </section>
 
-      {/* Trust Pillars Strip — Light Green Bar from Mockup */}
-      <section className="border-y border-[#d5e7db] bg-[#eaf4ed] py-8">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-            {TRUST_PILLARS.map((pillar) => (
-              <div
-                key={pillar.label}
-                className="flex items-center gap-3 text-center sm:text-left"
-              >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-primary-dark shadow-soft">
-                  {pillar.icon}
-                </span>
-                <span className="font-heading text-sm font-semibold text-foreground">
-                  {pillar.label}
+        {/* Two Matching Limited-Time Promotional Offers directly underneath */}
+        <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
+          
+          {/* Promo Card 1: Sick Visits (Purple Card) */}
+          <Reveal delayMs={100}>
+            <div className="relative flex flex-col justify-between rounded-3xl bg-[#4a154b] p-7 pt-9 shadow-soft-xl text-white sm:p-9 sm:pt-10">
+              
+              {/* Yellow Pill Badge */}
+              <div className="absolute -top-3.5 left-8 rounded-full bg-[#facc15] px-4 py-1 shadow-md">
+                <span className="font-heading text-xs font-black uppercase tracking-wider text-black">
+                  LIMITED-TIME OFFER
                 </span>
               </div>
-            ))}
-          </div>
+
+              <div className="grid grid-cols-1 items-center gap-6 sm:grid-cols-[1.1fr_1fr]">
+                {/* Left: Icon, Title & Price */}
+                <div>
+                  <div className="flex items-center gap-3">
+                    <ThermometerIcon className="h-10 w-10 text-purple-200" />
+                    <div>
+                      <h3 className="font-heading text-2xl sm:text-3xl font-bold leading-tight text-white">
+                        Sick Visits
+                      </h3>
+                      <div className="mt-1 flex items-center gap-2">
+                        <span className="text-sm font-semibold text-purple-200 line-through decoration-red-400 decoration-2">
+                          Regular $99.99
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <span className="font-heading text-4xl sm:text-5xl font-black text-[#facc15] tracking-tight">
+                      $59.99
+                    </span>
+                  </div>
+                </div>
+
+                {/* Right: Bullet List */}
+                <div className="space-y-2.5 text-xs sm:text-sm text-purple-100 border-t border-purple-400/30 pt-4 sm:border-t-0 sm:border-l sm:border-purple-400/30 sm:pl-6 sm:pt-0">
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-[#facc15] text-base leading-none">✓</span>
+                    <span>Self-pay sick visits only</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-[#facc15] text-base leading-none">✓</span>
+                    <span>Testing and additional services billed separately</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-[#facc15] text-base leading-none">✓</span>
+                    <span>Prescriptions when medically appropriate</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Action Button */}
+              <div className="mt-6 pt-5 border-t border-purple-400/30 flex items-center justify-between flex-wrap gap-3">
+                <span className="text-xs text-purple-200">
+                  In-office &amp; telehealth available
+                </span>
+                <Link
+                  href="/request-appointment?service=sick-visit"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#facc15] px-5 py-2.5 font-heading text-sm font-bold text-black shadow-sm transition-all hover:bg-yellow-300 hover:shadow-md"
+                >
+                  Request a $59.99 Sick Visit &rarr;
+                </Link>
+              </div>
+
+            </div>
+          </Reveal>
+
+          {/* Promo Card 2: School & Sports Physicals (Emerald Teal Card) */}
+          <Reveal delayMs={150}>
+            <div className="relative flex flex-col justify-between rounded-3xl bg-[#064e3b] p-7 pt-9 shadow-soft-xl text-white sm:p-9 sm:pt-10">
+              
+              {/* Yellow Pill Badge */}
+              <div className="absolute -top-3.5 left-8 rounded-full bg-[#facc15] px-4 py-1 shadow-md">
+                <span className="font-heading text-xs font-black uppercase tracking-wider text-black">
+                  LIMITED-TIME OFFER
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 items-center gap-6 sm:grid-cols-[1.1fr_1fr]">
+                {/* Left: Icon, Title & Price */}
+                <div>
+                  <div className="flex items-center gap-3">
+                    <TrophyIcon className="h-10 w-10 text-emerald-200" />
+                    <div>
+                      <h3 className="font-heading text-2xl sm:text-3xl font-bold leading-tight text-white">
+                        School &amp; Sports Physicals
+                      </h3>
+                      <div className="mt-1 flex items-center gap-2">
+                        <span className="text-sm font-semibold text-emerald-200 line-through decoration-red-400 decoration-2">
+                          Regular $99.99
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <span className="font-heading text-4xl sm:text-5xl font-black text-[#facc15] tracking-tight">
+                      $59.99
+                    </span>
+                  </div>
+                </div>
+
+                {/* Right: Bullet List */}
+                <div className="space-y-2.5 text-xs sm:text-sm text-emerald-100 border-t border-emerald-400/30 pt-4 sm:border-t-0 sm:border-l sm:border-emerald-400/30 sm:pl-6 sm:pt-0">
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-[#facc15] text-base leading-none">✓</span>
+                    <span>Self-pay school and sports physicals</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-[#facc15] text-base leading-none">✓</span>
+                    <span>Additional testing or services, if needed, billed separately</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Action Button */}
+              <div className="mt-6 pt-5 border-t border-emerald-400/30 flex items-center justify-between flex-wrap gap-3">
+                <span className="text-xs text-emerald-200">
+                  Quick turnaround &amp; completed forms
+                </span>
+                <Link
+                  href="/request-appointment?service=school-sports-physical"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#facc15] px-5 py-2.5 font-heading text-sm font-bold text-black shadow-sm transition-all hover:bg-yellow-300 hover:shadow-md"
+                >
+                  Request a $59.99 Physical &rarr;
+                </Link>
+              </div>
+
+            </div>
+          </Reveal>
+
         </div>
+
       </section>
 
       {/* Appointment Request & Pearland Location Section */}
       <section
         id="request-appointment"
-        className="mx-auto max-w-7xl scroll-mt-20 px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
+        className="mx-auto max-w-7xl scroll-mt-20 px-4 py-16 sm:px-6 sm:py-20 lg:px-8 border-t border-border/40"
       >
         <Reveal>
-          <SectionHeading
-            eyebrow="Schedule Your Visit"
-            title="Request an Appointment"
-            description="Fill out the form below and our team will contact you to confirm your visit. Fast, easy, and confidential."
-          />
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="inline-block rounded-full bg-primary-light px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary-dark">
+              Schedule Your Visit
+            </span>
+            <h2 className="mt-4 font-heading text-3xl font-bold text-[#4a154b] sm:text-4xl">
+              Request an Appointment
+            </h2>
+            <p className="mt-3 text-base sm:text-lg leading-relaxed text-soft">
+              Fill out the form below and our team will contact you to confirm your visit. Fast, easy, and confidential.
+            </p>
+          </div>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 items-start gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-14">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-14">
           
           {/* Left Column: Form */}
           <Reveal>
             <AppointmentRequestForm />
           </Reveal>
 
-          {/* Right Column: Location & Reassurance */}
+          {/* Right Column: Location & Practice Info */}
           <Reveal delayMs={150} className="space-y-6">
             
             {/* Our Location Card */}
-            <div className="rounded-2xl border border-border bg-white p-7 shadow-soft sm:p-8">
+            <div className="rounded-3xl border border-border bg-white p-7 shadow-soft sm:p-8">
               <div className="flex items-center gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-light text-primary-dark">
                   <MapPinIcon className="h-5 w-5" />
@@ -420,7 +466,7 @@ export default function HomePage() {
               </div>
 
               {/* Responsive Google Map Embed */}
-              <div className="mt-6 overflow-hidden rounded-xl border border-border">
+              <div className="mt-6 overflow-hidden rounded-2xl border border-border">
                 <iframe
                   title="Proactive Medical and Wellness Pearland Location"
                   src="https://maps.google.com/maps?q=11960+Broadway+Street,+Suite+520,+Pearland,+TX+77584&t=&z=15&ie=UTF8&iwloc=&output=embed"
@@ -435,7 +481,7 @@ export default function HomePage() {
             </div>
 
             {/* Why Choose Proactive Reassurance Card */}
-            <div className="rounded-2xl border border-border bg-primary-50/50 p-6 sm:p-7">
+            <div className="rounded-3xl border border-border bg-primary-50/50 p-6 sm:p-7">
               <h4 className="font-heading text-lg font-bold text-foreground">
                 Why Choose Proactive?
               </h4>
@@ -454,7 +500,7 @@ export default function HomePage() {
                 </li>
                 <li className="flex items-center gap-2.5">
                   <CheckIcon className="h-4 w-4 shrink-0 text-primary-dark" />
-                  <span>Support for mind, body, &amp; community</span>
+                  <span>Comprehensive support for mind, body, &amp; community</span>
                 </li>
               </ul>
             </div>
@@ -466,15 +512,21 @@ export default function HomePage() {
 
       {/* Insurance Partners */}
       <section className="bg-texture-dots bg-primary-50">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
           <Reveal>
-            <SectionHeading
-              eyebrow="Insurance &amp; Payment"
-              title="We Accept Most Major Insurances"
-              description="Making quality healthcare accessible to everyone in our community."
-            />
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary-dark">
+                Insurance &amp; Payment
+              </span>
+              <h2 className="mt-2 font-heading text-3xl font-semibold text-foreground">
+                We Accept Most Major Insurances
+              </h2>
+              <p className="mt-3 text-soft">
+                Making quality mental health and medical care accessible to everyone.
+              </p>
+            </div>
           </Reveal>
-          <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {INSURANCE_PARTNERS.map((name, i) => (
               <Reveal key={name} delayMs={i * 60}>
                 <div className="flex h-20 items-center justify-center rounded-xl border border-border/70 bg-white px-3 text-center shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg">
@@ -486,7 +538,7 @@ export default function HomePage() {
             ))}
           </div>
           <Reveal delayMs={300}>
-            <p className="mt-9 text-center text-[1.05rem] font-medium text-soft">
+            <p className="mt-8 text-center text-[1.05rem] font-medium text-soft">
               Self-pay options &amp; payment plans also available
             </p>
           </Reveal>
@@ -494,7 +546,7 @@ export default function HomePage() {
       </section>
 
       {/* Meet Techa Bryant */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
         <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-[240px_1fr] lg:gap-16">
           <Reveal>
             <div className="group relative mx-auto w-full max-w-[240px]">

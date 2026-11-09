@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import {
-  Anchor,
   Brain,
   ClipboardList,
   Heart,
-  Moon,
   Pill,
   Shield,
+  Sparkles,
   Stethoscope,
-  Video,
 } from "lucide-react";
 import Button from "@/components/Button";
 import CTABand from "@/components/CTABand";
@@ -19,9 +17,9 @@ import { REQUEST_APPOINTMENT_PATH } from "@/lib/routes";
 
 const ICON_PROPS = { className: "h-7 w-7", strokeWidth: 1.75 };
 
-const PAGE_TITLE = "Mental Health & Addiction Medicine Services";
+const PAGE_TITLE = "Our Services | Proactive Medical & Wellness";
 const PAGE_DESCRIPTION =
-  "Psychiatric evaluations, medication management, anxiety and depression treatment, ADHD, PTSD/trauma, insomnia, Suboxone (MAT) for addiction medicine, primary care, and telehealth or in-person visits — all in one compassionate Houston practice.";
+  "Comprehensive Mental Health, Addiction Medicine (Suboxone/MAT), Primary Care, and Wellness services in Pearland, TX. Compassionate, personalized care for the whole person.";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -47,12 +45,51 @@ const SERVICES: Service[] = [
     icon: <ClipboardList {...ICON_PROPS} />,
     title: "Psychiatric Evaluations",
     description:
-      "Comprehensive psychiatric evaluations form the foundation of personalized treatment. We take time to understand your unique needs, history, and goals.",
+      "Comprehensive psychiatric evaluations form the foundation of personalized treatment. We take time to understand your unique needs, medical history, and personal goals.",
     details: [
-      "Initial assessment",
-      "Diagnostic clarity",
-      "Treatment planning",
-      "Ongoing monitoring",
+      "Thorough diagnostic assessments",
+      "Individualized treatment planning",
+      "Medication recommendations",
+      "Support for adolescents (13–17) and adults",
+    ],
+  },
+  {
+    id: "addiction-medicine",
+    icon: <Shield {...ICON_PROPS} />,
+    title: "Addiction Medicine",
+    description:
+      "Compassionate, judgment-free treatment for substance use disorders. We provide evidence-based care to help you reclaim your life and health with dignity and lasting hope.",
+    details: [
+      "Suboxone treatment",
+      "Medication-assisted treatment (MAT)",
+      "Opioid and alcohol use disorder treatment",
+      "Substance use assessments & recovery support",
+    ],
+  },
+  {
+    id: "anxiety-depression",
+    icon: <Heart {...ICON_PROPS} />,
+    title: "Anxiety & Depression",
+    description:
+      "Evidence-based therapies and medical support for generalized anxiety, social anxiety, panic disorder, major depression, and treatment-resistant mood conditions.",
+    details: [
+      "Evidence-based symptom management",
+      "Personalized medication management",
+      "Therapy guidance & coping strategies",
+      "Continuous ongoing progress monitoring",
+    ],
+  },
+  {
+    id: "adhd-mood-disorders",
+    icon: <Brain {...ICON_PROPS} />,
+    title: "ADHD & Mood Disorders",
+    description:
+      "Comprehensive diagnostic evaluations and ongoing management for ADHD, bipolar disorder, and related mood conditions to help restore balance and focus.",
+    details: [
+      "Adult and adolescent ADHD evaluations",
+      "Bipolar disorder management & stabilization",
+      "Focus, executive function, and behavioral strategies",
+      "School and workplace accommodations support",
     ],
   },
   {
@@ -60,103 +97,38 @@ const SERVICES: Service[] = [
     icon: <Pill {...ICON_PROPS} />,
     title: "Medication Management",
     description:
-      "We provide expert medication management, adjusting prescriptions based on your response and needs. Our goal is to find the right balance for you.",
+      "Thoughtful psychiatric medication management focused on safety, efficacy, and your personal comfort. We carefully monitor side effects and make adjustments as you heal.",
     details: [
-      "Medication selection",
-      "Monitoring",
-      "Side effect management",
-      "Integration with therapy",
-    ],
-  },
-  {
-    id: "anxiety-depression",
-    icon: <Heart {...ICON_PROPS} />,
-    title: "Anxiety & Depression Treatment",
-    description:
-      "Anxiety and depression are among the most common mental health conditions. We use evidence-based therapy and medication to help you feel like yourself again.",
-    details: [
-      "Cognitive-behavioral therapy (CBT)",
-      "Psychotherapy",
-      "Medication options",
-      "Personalized treatment plans",
-    ],
-  },
-  {
-    id: "adhd",
-    icon: <Brain {...ICON_PROPS} />,
-    title: "ADHD Evaluation and Management",
-    description:
-      "ADHD affects focus, organization, and daily functioning. We provide thorough evaluations and personalized treatment to help you succeed.",
-    details: [
-      "Diagnostic assessment",
-      "Medication options",
-      "Behavioral strategies",
-      "School/work accommodations support",
-    ],
-  },
-  {
-    id: "ptsd-trauma",
-    icon: <Anchor {...ICON_PROPS} />,
-    title: "PTSD/Trauma-Related Conditions",
-    description:
-      "Trauma can affect every part of life. We provide compassionate, evidence-based care to help you process trauma and regain a sense of stability and safety.",
-    details: [
-      "Trauma-informed evaluation",
-      "Medication management",
-      "Coping and grounding strategies",
-      "Personalized treatment plans",
-    ],
-  },
-  {
-    id: "insomnia",
-    icon: <Moon {...ICON_PROPS} />,
-    title: "Insomnia Treatment",
-    description:
-      "Sleep struggles can affect your mental and physical health. We identify the root causes of insomnia and build a treatment plan to help you rest well again.",
-    details: [
-      "Sleep assessment",
-      "Medication options",
-      "Behavioral sleep strategies",
-      "Ongoing monitoring",
-    ],
-  },
-  {
-    id: "addiction-medicine",
-    icon: <Shield {...ICON_PROPS} />,
-    title: "Addiction Medicine/Suboxone (MAT)",
-    description:
-      "Medication-assisted treatment (MAT) using Suboxone is a compassionate, evidence-based approach to opioid use disorder. We support your recovery journey with dignity.",
-    details: [
-      "Suboxone maintenance",
-      "Counseling",
-      "Relapse prevention",
-      "Long-term recovery support",
+      "Careful medication selection & dosing",
+      "Routine follow-ups & therapeutic monitoring",
+      "Side effect prevention & management",
+      "Harmonious integration with existing care",
     ],
   },
   {
     id: "primary-care",
     icon: <Stethoscope {...ICON_PROPS} />,
-    title: "Primary Care/Family Medicine",
+    title: "Primary Care",
     description:
-      "Whole-person care for you and your family, alongside your mental health treatment—so your physical and mental well-being are supported in one place.",
+      "Whole-person medical care for routine, acute, and chronic health needs. From sick visits and physicals to hypertension and diabetes management, we support your body alongside your mind.",
     details: [
-      "Annual wellness visits",
-      "Preventive care",
-      "Chronic condition management",
-      "Referrals when needed",
+      "$59 Self-Pay Sick Visits (Cold, flu, cough, UTI, etc.)",
+      "School & sports physicals",
+      "Annual wellness exams & preventive health",
+      "Chronic condition management (Diabetes, high blood pressure)",
     ],
   },
   {
-    id: "telehealth-in-person",
-    icon: <Video {...ICON_PROPS} />,
-    title: "Telehealth and In-Person Care",
+    id: "wellness-services",
+    icon: <Sparkles {...ICON_PROPS} />,
+    title: "Wellness Services",
     description:
-      "Choose the care format that works for you. Telehealth for convenience, in-person for a direct connection.",
+      "Rejuvenating wellness treatments designed to optimize your vitality, immune health, and overall well-being from the inside out.",
     details: [
-      "Video appointments",
-      "In-office visits",
-      "Flexible scheduling",
-      "Same quality care both ways",
+      "Medical weight management & support",
+      "IV hydration & nutrient therapy",
+      "Vitamin injections (B12, Vitamin D, etc.)",
+      "Hormone & metabolic wellness support",
     ],
   },
 ];
@@ -170,11 +142,10 @@ export default function ServicesPage() {
             Our Services
           </span>
           <h1 className="mt-5 font-heading text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
-            Compassionate Mental Health &amp; Addiction Medicine Services
+            Compassionate Care for Mind, Body, &amp; Wellness
           </h1>
           <p className="mt-5 text-xl leading-relaxed text-soft">
-            From psychiatric evaluations to ongoing support, we offer
-            personalized care designed to help you achieve lasting wellness.
+            Explore our specialized psychiatric care, addiction medicine, primary medical services, and rejuvenating wellness therapies.
           </p>
         </Reveal>
       </section>
@@ -184,10 +155,10 @@ export default function ServicesPage() {
           <Reveal key={service.id} delayMs={i % 2 === 0 ? 0 : 80}>
             <div
               id={service.id}
-              className="ease-calm scroll-mt-24 rounded-xl border border-border/70 bg-white p-7 shadow-soft transition-shadow duration-500 hover:shadow-soft-lg sm:p-10"
+              className="ease-calm scroll-mt-24 rounded-2xl border border-border/70 bg-white p-7 shadow-soft transition-shadow duration-500 hover:shadow-soft-lg sm:p-10"
             >
               <div className="flex flex-col gap-8 sm:flex-row sm:items-start">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-primary-light text-primary-dark">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-light text-primary-dark">
                   {service.icon}
                 </div>
                 <div className="flex-1">
@@ -203,7 +174,7 @@ export default function ServicesPage() {
                         key={detail}
                         className="flex items-center gap-2.5 text-[1.05rem] text-foreground/85"
                       >
-                        <CheckIcon className="h-5 w-5 shrink-0 text-primary" />
+                        <CheckIcon className="h-5 w-5 shrink-0 text-emerald-600" />
                         {detail}
                       </li>
                     ))}
@@ -222,7 +193,7 @@ export default function ServicesPage() {
         ))}
       </section>
 
-      <CTABand heading="Ready to get started?" />
+      <CTABand heading="Ready to take the next step on your health journey?" />
     </>
   );
 }

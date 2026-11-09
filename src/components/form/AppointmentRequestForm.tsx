@@ -8,10 +8,12 @@ import { Field, FieldGroup, RadioOption, Spinner, inputClasses } from "./shared"
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const SERVICE_OPTIONS = [
-  "Mental Health (Anxiety, Depression, ADHD, Bipolar & More)",
-  "$59 Self-Pay Sick Visit (Cold, Flu, Cough, UTI & More)",
-  "Primary Care (Physicals, Diabetes, High Blood Pressure & More)",
-  "Wellness (Weight Loss, IV Drips, Vitamin Shots & More)",
+  "Mental Health",
+  "Addiction Medicine",
+  "Sick Visit",
+  "School & Sports Physical",
+  "Primary Care",
+  "Wellness",
 ] as const;
 
 interface AppointmentRequestFormProps {
@@ -43,14 +45,19 @@ export default function AppointmentRequestForm({
 
       if (serviceParam) {
         if (serviceParam.includes("sick") || serviceParam.includes("59")) {
-          setSelectedService("$59 Self-Pay Sick Visit (Cold, Flu, Cough, UTI & More)");
+          setSelectedService("Sick Visit");
           setSelectedInsurance("Self-pay");
+        } else if (serviceParam.includes("physical") || serviceParam.includes("school") || serviceParam.includes("sports")) {
+          setSelectedService("School & Sports Physical");
+          setSelectedInsurance("Self-pay");
+        } else if (serviceParam.includes("addiction") || serviceParam.includes("mat") || serviceParam.includes("suboxone")) {
+          setSelectedService("Addiction Medicine");
         } else if (serviceParam.includes("mental")) {
-          setSelectedService("Mental Health (Anxiety, Depression, ADHD, Bipolar & More)");
-        } else if (serviceParam.includes("primary")) {
-          setSelectedService("Primary Care (Physicals, Diabetes, High Blood Pressure & More)");
+          setSelectedService("Mental Health");
+        } else if (serviceParam.includes("primary") || serviceParam.includes("medical")) {
+          setSelectedService("Primary Care");
         } else if (serviceParam.includes("wellness")) {
-          setSelectedService("Wellness (Weight Loss, IV Drips, Vitamin Shots & More)");
+          setSelectedService("Wellness");
         }
       }
     }
@@ -299,7 +306,7 @@ export default function AppointmentRequestForm({
             value={selectedService}
             onChange={(e) => {
               setSelectedService(e.target.value);
-              if (e.target.value.includes("$59")) {
+              if (e.target.value === "Sick Visit" || e.target.value === "School & Sports Physical") {
                 setSelectedInsurance("Self-pay");
               }
             }}
