@@ -28,12 +28,12 @@ export default function ContactInfoCard({
       {primaryHref ? (
         <a
           href={primaryHref}
-          className="mt-2 w-full min-w-0 break-words text-lg font-semibold text-accent transition-colors hover:text-accent-dark"
+          className="mt-2 w-full min-w-0 break-words text-xl font-bold text-accent transition-colors hover:text-accent-dark sm:text-2xl"
         >
           {primary}
         </a>
       ) : (
-        <p className="mt-2 w-full min-w-0 break-words text-lg font-semibold text-foreground">
+        <p className="mt-2 w-full min-w-0 break-words text-xl font-semibold text-foreground sm:text-2xl">
           {primary}
         </p>
       )}

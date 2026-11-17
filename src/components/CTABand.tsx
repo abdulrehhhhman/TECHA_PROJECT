@@ -26,9 +26,9 @@ export default function CTABand({ heading, subtext }: CTABandProps) {
           </Button>
           <a
             href={PHONE_HREF}
-            className="flex items-center gap-2 text-lg font-semibold text-white/90 transition-colors hover:text-secondary-light"
+            className="flex items-center gap-3 text-xl font-bold text-white transition-colors hover:text-secondary-light sm:text-2xl"
           >
-            <PhoneIcon className="h-5 w-5" />
+            <PhoneIcon className="h-6 w-6 text-secondary-light" />
             Or call us: {PHONE_DISPLAY}
           </a>
         </div>

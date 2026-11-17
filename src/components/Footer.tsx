@@ -117,7 +117,8 @@ export default function Footer() {
             <FooterHeading>Contact Us</FooterHeading>
             <ul className="mt-4 space-y-2.5 text-[1.05rem] text-white/75">
               <li>
-                <a href="tel:+13468785272" className="transition-colors hover:text-secondary-light">
+                <a href="tel:+13468785272" className="inline-flex items-center gap-2 text-lg font-bold text-white transition-colors hover:text-secondary-light">
+                  <span className="text-secondary-light">📞</span>
                   (346) 878-5272
                 </a>
               </li>

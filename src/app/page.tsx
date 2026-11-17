@@ -157,29 +157,33 @@ export default function HomePage() {
                 </a>
               </div>
 
-              {/* Quick Links */}
-              <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-semibold text-soft">
+              {/* Call Us & Quick Links */}
+              <div className="mt-7 flex flex-wrap items-center gap-4 sm:gap-6">
                 <a
                   href="tel:+13468785272"
-                  className="inline-flex items-center gap-1.5 text-accent hover:text-accent-dark"
+                  className="inline-flex items-center gap-3 rounded-2xl bg-teal-50 border-2 border-teal-600/30 px-5 py-2.5 text-xl sm:text-2xl font-black text-teal-950 shadow-sm transition-all hover:bg-teal-100 hover:border-teal-600 hover:scale-[1.02] hover:shadow-soft"
+                  aria-label="Call (346) 878-5272"
                 >
-                  <PhoneIcon className="h-4 w-4" />
-                  (346) 878-5272
+                  <PhoneIcon className="h-6 w-6 text-teal-700 shrink-0" />
+                  <span className="tracking-tight">(346) 878-5272</span>
                 </a>
-                <a
-                  href={JANE_LOGIN_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-dark"
-                >
-                  Existing Patient Portal &rarr;
-                </a>
-                <Link
-                  href={REFER_A_PATIENT_PATH}
-                  className="text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-dark"
-                >
-                  Refer a Patient &rarr;
-                </Link>
+
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm sm:text-base font-semibold text-soft">
+                  <a
+                    href={JANE_LOGIN_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-dark"
+                  >
+                    Existing Patient Portal &rarr;
+                  </a>
+                  <Link
+                    href={REFER_A_PATIENT_PATH}
+                    className="text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-dark"
+                  >
+                    Refer a Patient &rarr;
+                  </Link>
+                </div>
               </div>
             </Reveal>
 
@@ -445,13 +449,14 @@ export default function HomePage() {
                 </p>
                 <p className="text-soft">11960 Broadway Street, Suite 520</p>
                 <p className="text-soft">Pearland, TX 77584</p>
-                <p className="pt-2">
+                <p className="pt-3">
                   <a
                     href="tel:+13468785272"
-                    className="font-bold text-accent transition-colors hover:text-accent-dark flex items-center gap-2"
+                    className="inline-flex items-center gap-3 rounded-xl bg-teal-50 border border-teal-200/80 px-4 py-2.5 text-xl sm:text-2xl font-black text-teal-950 transition-colors hover:bg-teal-100 hover:text-teal-900"
+                    aria-label="Call (346) 878-5272"
                   >
-                    <PhoneIcon className="h-4 w-4" />
-                    (346) 878-5272
+                    <PhoneIcon className="h-6 w-6 text-teal-700 shrink-0" />
+                    <span>(346) 878-5272</span>
                   </a>
                 </p>
               </div>

@@ -42,13 +42,16 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 xl:flex">
+        <div className="hidden items-center gap-4 xl:flex">
           <a
             href={PHONE_HREF}
-            className="flex shrink-0 items-center gap-2 whitespace-nowrap text-[1.05rem] font-medium text-accent transition-colors hover:text-accent-dark"
+            className="flex shrink-0 items-center gap-2.5 whitespace-nowrap rounded-full bg-teal-50 border border-teal-200/80 px-4 py-2 text-lg font-bold text-teal-900 shadow-xs transition-all hover:bg-teal-100 hover:border-teal-300 hover:scale-105 hover:shadow-soft"
+            aria-label="Call (346) 878-5272"
           >
-            <PhoneIcon className="h-4 w-4" />
-            {PHONE_DISPLAY}
+            <PhoneIcon className="h-5 w-5 text-teal-700" />
+            <span className="text-[1.15rem] font-black tracking-tight text-teal-950">
+              {PHONE_DISPLAY}
+            </span>
           </a>
           <Button
             href={REQUEST_APPOINTMENT_PATH}
@@ -121,10 +124,10 @@ export default function Navbar() {
           ))}
           <a
             href={PHONE_HREF}
-            className="mt-2 flex items-center gap-2 rounded-lg px-3 py-3 text-lg font-medium text-accent"
+            className="mt-3 flex items-center justify-center gap-3 rounded-xl bg-teal-50 border border-teal-200/80 px-4 py-3.5 text-xl font-black text-teal-950 shadow-xs"
           >
-            <PhoneIcon className="h-4 w-4" />
-            {PHONE_DISPLAY}
+            <PhoneIcon className="h-6 w-6 text-teal-700" />
+            <span>{PHONE_DISPLAY}</span>
           </a>
           <a
             href={JANE_LOGIN_URL}
